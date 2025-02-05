@@ -33,10 +33,10 @@ const main = async () => {
                 <iframe src="https://opac.sbn.it/risultati-autori/-/opac-autori/detail/${entity[0].id}" height="625" width="425" style="margin-top: -260px;" title="Iframe Example"></iframe>
             </div>
             <div class="card-body">
-                <h5 class="card-title">${entity[0].label}</h5>
-                <p class="card-text mb-2">${entity[0].id}</p>
+                <h5 class="card-title" style="display: none;">${entity[0].label}</h5>
+                <p class="card-text mb-2" style="display: none;">${entity[0].id}</p>
                 <div class="form-check form-switch d-flex justify-content-center align-items-center">
-                    <input class="form-check-input bg-danger" type="checkbox" id="flexSwitchCheckDefault" style="transform: scale(1.5);">
+                    <input class="form-check-input bg-danger my-auto" type="checkbox" id="flexSwitchCheckDefault" style="transform: scale(1.5);">
                 </div>
             </div>
         </div>

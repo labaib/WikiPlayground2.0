@@ -6,7 +6,9 @@ const opacApi = async (itemLabel) => {
     url += `&filter_nocheck:6021:Tipo_nome=Persona:A`
     
     
-    let opacResponse = await fetch(url);
+    let opacResponse = await fetch(url, {
+        headers: {  'Origin': 'https://logo94.github.io' }
+    });
     let opacJson = await opacResponse.json();
 
     let resultList = opacJson.data.results

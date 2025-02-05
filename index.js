@@ -26,7 +26,7 @@ const main = async () => {
     candidates.forEach(entity => {
 
         let entityElement = document.createElement("li")
-        entityElement.className = "list-group-item border-0 mx-3"
+        entityElement.className = "list-group-item border-0 mx-2"
         entityElement.innerHTML = `
         <div class="card text-center" style="overflow: hidden; width: fit-content;">
             <div class="card-img-top p-0">

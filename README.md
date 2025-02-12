@@ -1,14 +1,14 @@
 # WikiPlayground
 Gioco per la riconciliazione delle entità SBN con gli Items Wikidata
 
-### Funzionamento
+### Come funziona
 Il gioco interroga Wikidata in modo da ottenere gli Item che seguono i seguenti criteri:
 - sono persone
 - possiedono una label o un alias in italiano
 - sono cittadini italiani
 - non possiedono la proprietà P396 (SBN author ID)
 
-Dalla lista ottenuta viene estratto un risultato randomico e la relativa etichetta viene cercata all'interno dell'OPAC SBN, tutti i match trovati vengono rappresentati per mezzo di iFrame, ogni opzione permette di accedere alla pagina dell'OPAC, consultare le pubblicazioni associate al match e selezionare le voci relative alla medesima entità Wikidata. Una volta selezionati uno o più match, per mezzo del bottone per l'inserimento viene aggiunto all'Item Wikidata di partenza un claim contenente la proprietà P396 e relativo valore. La voce viene referenziata per mezzo della proprietà P1810 che riporta la forma dell'etichetta presente nell'OPAC. 
+Dalla lista ottenuta viene estratto un risultato randomico e la relativa etichetta viene cercata all'interno dell'OPAC SBN, tutti i match trovati vengono rappresentati per mezzo di iFrame, ogni opzione permette di accedere alla pagina dell'OPAC, consultare le pubblicazioni associate al match e selezionare le voci da importare in Wikidata. Una volta selezionati uno o più match, per mezzo del bottone per l'inserimento viene aggiunto all'Item Wikidata di partenza un claim contenente la proprietà P396 e relativo valore. La voce viene referenziata per mezzo della proprietà P1810 che riporta la forma dell'etichetta presente nell'OPAC. 
 
 
 

@@ -1,20 +1,29 @@
 # WikiPlayground
 Gioco per la riconciliazione delle entità SBN con gli Items Wikidata
 
+### Funzionamento
+Il gioco interroga Wikidata in modo da ottenere gli Item che seguono i seguenti criteri:
+- sono persone
+- possiedono una label o un alias in italiano
+- sono cittadini italiani
+- non possiedono la proprietà P396 (SBN author ID)
+
+Dalla lista ottenuta viene estratto un risultato randomico e la relativa etichetta viene cercata all'interno dell'OPAC SBN, tutti i match trovati vengono rappresentati per mezzo di iFrame, ogni opzione permette di accedere alla pagina dell'OPAC, consultare le pubblicazioni associate al match e selezionare le voci relative alla medesima entità Wikidata. Una volta selezionati uno o più match, per mezzo del bottone per l'inserimento viene aggiunto all'Item Wikidata di partenza un claim contenente la proprietà P396 e relativo valore. La voce viene referenziata per mezzo della proprietà P1810 che riporta la forma dell'etichetta presente nell'OPAC. 
+
+
+
 ### Requisiti
 1. [Brave browser](https://brave.com/download/): browser basato su Chromium che blocca automaticamente i messaggi per la gestione dei cookies;
 2. [CORS Unblock](https://chromewebstore.google.com/detail/cors-unblock/lfhmikememgdcahcdlaciloancbhjino?pli=1): estensione per browser, le richieste all'OPAC SBN effetuate dal gioco sono bloccate dai server ICCU per la violazione delle policy CORS (Cross-Origin Resource Sharing), per esegire comunque la chiamata è necessario il ricorso ad un'estensione per browser che esegua le chiamate al posto del gioco;
 3. Account [Wikidata](https://www.wikidata.org/w/index.php?&title=Special:UserLogin)
 
-### Funzionamento
+### Guida
 Il gioco è accessibile tramite una pagina web disponbile al link (https://logo94.github.io/WikiPlayground/)[https://logo94.github.io/WikiPlayground/]
-
-
 
 La pagina web si compone dei seguenti elementi:
 
 <div align="center">
-  <img src="https://i.imgur.com/8BgVXcY.png">
+  <img src="https://github.com/logo94/WikiPlayground/blob/main/img/wp-tutorial.png">
 </div>
 
 In cui:
@@ -27,7 +36,7 @@ In cui:
 Box candidato OPAC SBN:
 
 <div align="center">
-  <img src="https://i.imgur.com/8BgVXcY.png">
+  <img src="https://github.com/logo94/WikiPlayground/blob/main/img/wp-opac-tutorial.png">
 </div>
 
 

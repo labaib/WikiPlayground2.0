@@ -1,6 +1,15 @@
 # WikiPlayground
 Gioco per la riconciliazione delle entità SBN con gli Items Wikidata
 
+
+
+### Link utili
+* [WikiPlayground](https://www.wikidata.org/wiki/Q132260000): Item Wikidata del gioco
+* [WikiPlayground SBN NoMatch DB](https://www.wikidata.org/wiki/Q132256514): Item wikidata utilizzato per l'archiviazione degli Item Wiki che hanno zero match in OPAC SBN
+* [Laboratorio Stelline 2025](https://www.wikidata.org/wiki/Wikidata:Gruppo_AIB_TBID/Stelline/2025): pagina Wikidata del laboratorio organizzato in occasione del Convegno delle Stelline 2025
+
+
+
 ### Come funziona
 Il gioco interroga Wikidata in modo da ottenere gli Item che seguono i seguenti criteri:
 - sono persone
@@ -9,6 +18,12 @@ Il gioco interroga Wikidata in modo da ottenere gli Item che seguono i seguenti 
 - non possiedono la proprietà P396 (SBN author ID)
 
 Dalla lista ottenuta viene estratto un risultato randomico e la relativa etichetta viene cercata all'interno dell'OPAC SBN, tutti i match trovati vengono rappresentati per mezzo di iFrame, ogni opzione permette di accedere alla pagina dell'OPAC, consultare le pubblicazioni associate al match e selezionare le voci da importare in Wikidata. Una volta selezionati uno o più match, per mezzo del bottone per l'inserimento viene aggiunto all'Item Wikidata di partenza un claim contenente la proprietà P396 e relativo valore. La voce viene referenziata per mezzo della proprietà P1810 che riporta la forma dell'etichetta presente nell'OPAC. 
+
+Al termine dell'operazione di aggiornamento si aprirà in una nuova scheda del browser la pagina relativa all'Item aggiornato.
+
+Quando una ricerca produce 0 risultati, l'Item viene salvato come proprità P527 dell'Item WikiPlayground SBN NoMatch DB (Q132256514) in modo da essere escluso per le future richieste
+
+Ad ogni edit viene aggiunto un summary dal valore "WikiPlayground"
 
 
 
@@ -19,6 +34,8 @@ Dalla lista ottenuta viene estratto un risultato randomico e la relativa etichet
 
 ### Guida
 Il gioco è accessibile tramite una pagina web disponbile al link (https://logo94.github.io/WikiPlayground/)[https://logo94.github.io/WikiPlayground/]
+
+> Per poter utilizzare il gioco è necessario aver eseguito il login in Wikidata, anche da un'altra scheda del browser
 
 La pagina web si compone dei seguenti elementi:
 
@@ -47,4 +64,7 @@ D. Switch per la selezione del match per l'import automatico di ID e Label in Wi
 
 
 
-
+### Future implementazioni
+* Aggiunta dinamica della query di partenza
+* Gestione dinamica del dominio (per istanze Wikibase)
+* Modal statistiche d'uso WikiPlayground

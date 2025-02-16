@@ -1,55 +1,88 @@
-import { noMatchItem, randomItem } from "./wiki.js";
+import { randomItem, editWikiItem } from "./wiki.js";
 import { opacApi } from "./opac.js"
 
 const main = async (wikiCard, counterBtn, listGroupElement, token) => {
 
     listGroupElement.innerHTML = ""
 
-    let wikiResponse = await randomItem()
+    // Esegui la funzione asincrona per ottenere i dati
+    let wikiResponse = await randomItem();
     
-    let itemId = wikiResponse.results.bindings[0].item.value.split("/").pop()
-    let itemLabel = wikiResponse.results.bindings[0].itemLabel.value
-
+    // Estrai l'ID dell'elemento (Qxxxx) dall'URL
+    const itemId = wikiResponse.results.bindings[0].item.value.match(/Q\d+/)[0];
+    
+    // Estrai l'etichetta (label) dell'elemento
+    const itemLabel = wikiResponse.results.bindings[0].itemLabel.value;
+    
+    // IFrame Elemento Wikidata
     wikiCard.innerHTML = `
-        <iframe class="card-img-top" src="https://www.wikidata.org/wiki/Item:${itemId}" style="height: 100%; width: 100%;" title="Wiki Random Page"></iframe>
+        <iframe class="card-img-top" src="https://www.wikidata.org/wiki/Item:${itemId}" style="height: 100%; width: 100%; border: none;" title="Wiki Random Page"></iframe>
     `
-    
+    // Ottieni candidati da API OPAC SBN
     let candidates = await opacApi(itemLabel)
 
+    // Se non ci sono match viene inserito il valore novalue
     if (candidates.length === 0) {
         
-        counterBtn.className = "btn btn-outline-danger mx-auto shadow"
-        counterBtn.innerHTML = `
-        <h1 class="mt-2">0</h1>
-        `
+        counterBtn.className = "btn btn-outline-danger my-auto mx-auto shadow"
+        counterBtn.innerHTML = `<h1 class="mt-2">0</h1>`
 
         let notFoundElement = document.createElement("li")
-        notFoundElement.className = "list-group-item border-0 mx-1 bg-transparent"
+        notFoundElement.className = "list-group-item border-0 mx-1 bg-transparent my-auto"
         notFoundElement.innerHTML = `
-        <div class="card text-center shadow" style="overflow: hidden; width: fit-content; margin-top: 8em; margin-bottom: 5em;">
+        <div class="card text-center shadow my-auto" style="overflow: hidden; width: fit-content;">
             <div class="card-body">
-                <h3 class="m-2">Nessun risultato trovato</h3>
+                <h3 class="m-2">Nessun match trovato</h3>
+                <hr>
+                <p class="my-1">Inserimento di novalue all'interno dell'elemento...</p>
             </div>
         </div>
         `
-
         listGroupElement.className = "list-group list-group-horizontal justify-content-center overflow-x-auto bg-transparent p-0"
         listGroupElement.appendChild(notFoundElement)
 
-        await noMatchItem(itemId, token)
+        let apiResponse = await editWikiItem(itemId, [], token);
 
-        return false
+        if (apiResponse) {
+            notFoundElement.innerHTML = `
+            <div class="card text-center shadow my-auto" style="overflow: hidden; width: fit-content;">
+                <div class="card-body">
+                    <h3 class="m-2">Nessun match trovato</h3>
+                    <hr>
+                    <p class="my-1 mx-2">Inserimento di <i>nessun valore</i> all'interno dell'elemento...</p>
+                    <hr>
+                    <p class="my-1 text-success">Proprietà P396 aggiornata correttamente a <i>nessun valore</i></p>
+                    <hr>
+                    <h5 class="my-1 text-decoration-none"><a href="https://www.wikidata.org/wiki/Item:${itemId}" target="_blank">${itemId}</a></h5>
+                </div>
+            </div>
+            `
+           
+        } else {
+            notFoundElement.innerHTML = `
+            <div class="card text-center shadow my-auto" style="overflow: hidden; width: fit-content;">
+                <div class="card-body">
+                    <h3 class="m-2">Nessun match trovato</h3><br>
+                    <hr>
+                    <p class="my-1 mx-2">Inserimento di <i>nessun valore</i> all'interno dell'elemento...</p>
+                    <hr>
+                    <p class="text-danger">Errore: elemento non aggiornato correttamente, procedere manualmente</p>
+                    <hr>
+                    <h5 class="my-1 text-decoration-none"><a href="https://www.wikidata.org/wiki/Item:${itemId}" target="_blank">${itemId}</a></h5>
+                </div>
+            </div>
+            `
+        }
+
+        return itemId
 
     } else if (candidates.length <= 4) {
-
         listGroupElement.className = "list-group list-group-horizontal justify-content-center overflow-x-auto bg-transparent"
-    
     } else if (candidates.length > 4) {
-
         listGroupElement.className = "list-group list-group-horizontal overflow-x-auto bg-transparent"
     }
 
-    counterBtn.className = "btn btn-outline-success mx-auto shadow"
+    counterBtn.className = "btn btn-outline-success my-auto mx-auto shadow"
     counterBtn.innerHTML = `
     <h1 class="mt-2">${candidates.length}</h1>
     `
@@ -62,11 +95,11 @@ const main = async (wikiCard, counterBtn, listGroupElement, token) => {
         let entityBid = entityId.replace("ITICCU", "")
 
         let entityElement = document.createElement("li")
-        entityElement.className = "list-group-item border-0 mx-1 bg-transparent"
+        entityElement.className = "list-group-item border-0 mx-1 my-2 bg-transparent"
         entityElement.innerHTML = `
-        <div class="card text-center shadow mb-2" style="overflow: hidden; width: fit-content;">
+        <div class="card text-center shadow" style="overflow: hidden; width: fit-content; height: 100%">
             <div class="card-img-top p-0">
-                <iframe src="${opacFrameUrl}" height="600" width="425" style="margin-top: -260px;" title="Iframe Example"></iframe>
+                <iframe src="${opacFrameUrl}" height="650" width="425" style="margin-top: -260px;" title="Iframe Example"></iframe>
             </div>
             <div class="card-body">
                 <div class="row justify-content-center align-items-center">

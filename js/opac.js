@@ -1,3 +1,4 @@
+// Interrogazione API OPAC SBN per etichetta
 const opacApi = async (itemLabel) => {
 
     let url = `https://opac.sbn.it/o/opac-api/titles-search-auth?`
@@ -7,11 +8,15 @@ const opacApi = async (itemLabel) => {
     
     let opacResponse = await fetch(url);
     let opacJson = await opacResponse.json();
-
     let resultList = opacJson.data.results
     
-    return resultList
+    if (resultList.length > 0) {
+        return resultList
+    } else {
+        return []
+    }
 
 } 
 
+// Esportazione funzione
 export { opacApi }

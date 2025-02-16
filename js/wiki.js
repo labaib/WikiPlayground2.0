@@ -43,6 +43,29 @@ const randomItem = async () => {
 
 };
 
+// Verifica stato di autenticazione
+const checkLoginStatus = async () => {
+    const params = new URLSearchParams({
+        action: "query",
+        meta: "userinfo",
+        format: "json"
+    });
+
+    try {
+        const response = await fetch(`${apiEndpoint}?${params.toString()}`, { credentials: "include" });
+        const data = await response.json();
+
+        if (data.query?.userinfo?.id) {
+            return true
+        } else {
+            return false
+        }
+    } catch (error) {
+        console.error("Errore durante la verifica dello stato di login:", error);
+        return false
+    }
+}
+
 // Ottieni token per autenticazione
 const getWikiToken = async () => {
 
@@ -203,4 +226,4 @@ const editWikiItem = async (wikiItemId, opacMatchList, token) => {
 }
 
 // Esportazione funzioni
-export { randomItem, getWikiToken, editWikiItem }
+export { randomItem, getWikiToken, editWikiItem, checkLoginStatus }

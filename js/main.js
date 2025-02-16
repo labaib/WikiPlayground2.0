@@ -53,7 +53,7 @@ const main = async (wikiCard, counterBtn, listGroupElement, token) => {
                     <hr>
                     <p class="my-1 text-success">Proprietà P396 aggiornata correttamente a <i>nessun valore</i></p>
                     <hr>
-                    <h5 class="my-1 text-decoration-none"><a href="https://www.wikidata.org/wiki/Item:${itemId}" target="_blank">${itemId}</a></h5>
+                    <h5 class="my-1"><a class="text-decoration-none" href="https://www.wikidata.org/wiki/Item:${itemId}" target="_blank">${itemId}</a></h5>
                 </div>
             </div>
             `
@@ -68,7 +68,7 @@ const main = async (wikiCard, counterBtn, listGroupElement, token) => {
                     <hr>
                     <p class="text-danger">Errore: elemento non aggiornato correttamente, procedere manualmente</p>
                     <hr>
-                    <h5 class="my-1 text-decoration-none"><a href="https://www.wikidata.org/wiki/Item:${itemId}" target="_blank">${itemId}</a></h5>
+                    <h5 class="my-1"><a class="text-decoration-none" href="https://www.wikidata.org/wiki/Item:${itemId}" target="_blank">${itemId}</a></h5>
                 </div>
             </div>
             `

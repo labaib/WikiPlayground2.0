@@ -4,24 +4,37 @@ Gioco per la riconciliazione delle entità SBN con gli Items Wikidata
 
 
 ### Link utili
-* [WikiPlayground](https://www.wikidata.org/wiki/Q132260000): Item Wikidata del gioco
-* [WikiPlayground SBN NoMatch DB](https://www.wikidata.org/wiki/Q132256514): Item wikidata utilizzato per l'archiviazione degli Item Wiki che hanno zero match in OPAC SBN
-* [Laboratorio Stelline 2025](https://www.wikidata.org/wiki/Wikidata:Gruppo_AIB_TBID/Stelline/2025): pagina Wikidata del laboratorio organizzato in occasione del Convegno delle Stelline 2025
+- [WikiPlayground](https://www.wikidata.org/wiki/Q132260000): elemento Wikidata del gioco
+- [Laboratorio Stelline 2025](https://www.wikidata.org/wiki/Wikidata:Gruppo_AIB_TBID/Stelline/2025): pagina Wikidata del laboratorio organizzato in occasione del Convegno delle Stelline 2025
 
 
 
 ### Come funziona
-Il gioco interroga Wikidata in modo da ottenere gli Item che seguono i seguenti criteri:
-- sono persone
-- possiedono una label o un alias in italiano
-- sono cittadini italiani
-- non possiedono la proprietà P396 (SBN author ID)
+Il gioco esegue una query SPARQL in modo da ottenere un item casuale:
+
+```
+# SPARQL Query
+SELECT DISTINCT ?item ?itemLabel
+  WHERE
+  {
+      # Filtra gli item con cittadinanza italiana (Q38) o italiana (Q172579)
+      VALUES ?v { wd:Q172579 wd:Q38 }
+      ?item wdt:P27 ?v ;  # P27 = paese di cittadinanza
+              wdt:P214 [] . # P214 = identificativo VIAF
+
+      # Filtra per etichette in italiano
+      ?item rdfs:label ?itemLabel . FILTER(LANG(?itemLabel) = "it")
+
+      # Esclude gli item che hanno una proprietà P396
+      FILTER NOT EXISTS { ?item wdt:P396 [] . }
+  }
+```
 
 Dalla lista ottenuta viene estratto un risultato randomico e la relativa etichetta viene cercata all'interno dell'OPAC SBN, tutti i match trovati vengono rappresentati per mezzo di iFrame, ogni opzione permette di accedere alla pagina dell'OPAC, consultare le pubblicazioni associate al match e selezionare le voci da importare in Wikidata. Una volta selezionati uno o più match, per mezzo del bottone per l'inserimento viene aggiunto all'Item Wikidata di partenza un claim contenente la proprietà P396 e relativo valore. La voce viene referenziata per mezzo della proprietà P1810 che riporta la forma dell'etichetta presente nell'OPAC. 
 
 Al termine dell'operazione di aggiornamento si aprirà in una nuova scheda del browser la pagina relativa all'Item aggiornato.
 
-Quando una ricerca produce 0 risultati, l'Item viene salvato come proprità P527 dell'Item WikiPlayground SBN NoMatch DB (Q132256514) in modo da essere escluso per le future richieste
+Quando una ricerca produce 0 risultati viene inserito il valore 'novalue' in modo da essere escluso per le future richieste
 
 Ad ogni edit viene aggiunto un summary dal valore "WikiPlayground"
 

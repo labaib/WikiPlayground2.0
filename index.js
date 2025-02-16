@@ -7,45 +7,50 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const wikiCard = document.getElementById('iframe_wiki_card');
 
+    const infoBtn = document.getElementById('info_btn');
     const nextBtn = document.getElementById('next_btn');
     const editBtn = document.getElementById('edit_btn');
     const counterBtn = document.getElementById('count_btn');
 
     const listGroupElement = document.getElementById('opac_list');
 
-    const statusModal = document.getElementById('statusModal');
-    const modalBody = document.getElementById('status-body');
-    const modal = new bootstrap.Modal(statusModal);
+    const infoModal = new bootstrap.Modal(document.getElementById('infoModal'));
+    const infoBody = document.getElementById('info-body');
 
-    let itemId
+    const statusModal = new bootstrap.Modal(document.getElementById('statusModal'));
+    const statusBody = document.getElementById('status-body');
 
     editBtn.setAttribute("disabled", "disabled");
 
-    let token = await getWikiToken()
+    // Bottone informazioni
+    infoBtn.addEventListener('click', async() => { 
+        let readmeFile = await fetch('README.md');
+        let readme = await readmeFile.text()
+        infoBody.innerHTML = marked.parse(readme)
+        infoModal.show();
+    });
+
+    const token = await getWikiToken()  // Ottieni token wikidata
 
     if (!token) {
         alert(`Eseguire il login in Wikidata`)
         return false
     }
 
-    itemId = await main(wikiCard, counterBtn, listGroupElement, token)
+    const itemId = await main(wikiCard, counterBtn, listGroupElement, token)
 
-    // Next item button listener
-    nextBtn.addEventListener('click', function(event) {
+    if (!itemId) {
+        location.reload()
+    }
 
-        event.preventDefault();
-        counterBtn.className = "btn btn-outline-secondary mx-auto shadow"
-        counterBtn.innerHTML = `
-        <h1 class="mt-2">-</h1>
-        `
-        main(wikiCard, counterBtn, listGroupElement, token)
+    // Bottone prossimo Item
+    nextBtn.addEventListener('click', async() => { location.reload() });
 
-    });
-
+    // Bottone modifica Item
     editBtn.addEventListener('click', async (event) => {
         event.preventDefault();
 
-        modal.show()
+        statusModal.show();
 
         const radios = document.querySelectorAll('input[name="radio-button"]');
         
@@ -68,23 +73,37 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         });
 
-        let apiResponse = await editWikiItem(itemId, opacList, token);
+        if (opacList.length === 0) {
+            alert('Selezionare almeno un candidato')
+            return true
 
-        modalBody.innerHTML = `
-        <p class="mt-2">${apiResponse}</p>
-        `
+        } else if (opacList.length > 0) {
+            let apiResponse = await editWikiItem(itemId, opacList, token);
+            if (apiResponse) {
+                statusBody.innerHTML = `
+                <p class="mt-3">"Item modificato con successo!"</p>
+                <small><i>Reindirizzamento all'item aggiornato...</i></small>
+                `
+                await delay(2000)
+                window.open(`https://www.wikidata.org/wiki/Item:${itemId}`, "_blank");
+                statusModal.hide()
 
-        await delay(2000)
-        window.open(`https://www.wikidata.org/wiki/Item:${itemId}`, "_blank");
-        location.reload()
+            } else {
+                statusBody.innerHTML = `
+                <p class="mt-3">"Errore durante la modifica"</p>
+                <small class="my-2"><i>Riprovare o procedere alla modifica manuale dell'elemento</i></small><br>
+                <h5 class="text-decoration-none"><a href="https://www.wikidata.org/wiki/Item:${itemId}" target="_blank">${itemId}</a></h5>
+                `
+            }
 
-        return true
+            return true
+        }
 
-    })
+    });
 
-
-    document.addEventListener('click', ({ target }) => { // handler fires on root container click
-        if (target.getAttribute('name') === 'radio-button') { // check if user clicks right element
+    // Gestione check-radio per la selezione di candidati SBN 
+    document.addEventListener('click', ({ target }) => {
+        if (target.getAttribute('name') === 'radio-button') {
             if (target.className == "form-check-input bg-danger my-auto") {
                 target.className = "form-check-input bg-success my-auto"
                 editBtn.removeAttribute("disabled");

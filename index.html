@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
@@ -8,79 +8,117 @@
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>WikiPlayground</title>
-
     <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/8/82/Wikidata-logo-black-en.svg">
-   
+    
+    <!-- Descrizione pagina -->
+    <title>WikiPlayground</title>
+    <meta name="description" content="Gioco per la riconciliazione delle entità SBN con Wikidata">
+    <meta name="keywords" content="SBN, Wikidata, Wiki, Gaming">
+    <meta name="author" content="https://github.com/logo94">
+
+    <!-- Includi Librerie JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- Includi Librerie CSS e stile -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        .flex-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .half-height {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: white; /* Aggiungi uno sfondo per evitare trasparenze */
+        }
+    </style>
 
 </head>
-<body style="height: 100%;">
+<body>
 
-    <div class="row" style="height: 100%; width: 100%;">
-        <div class="col mt-3">
-            <div class="row my-auto mb-2 px-5">
-
+    <div class="flex-container p-3">
+        
+        <!-- Riga 1 -->
+        <div class="row half-height">
+            <div class="col-11" style="height: 100%;">
                 <!-- Wikidata Main iFrame -->
-                <div class="col-11">
-                    <div class="row my-auto">
-                        <div class="row justify-content-center" style="width: 100%;">
-                            <div class="col" style="width: 0%;">
-                                <div class="card mx-1 p-3 shadow" style="height: 25em;" id="iframe_wiki_card"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Bottoni sulla colonna di sinistra -->
-                <div class="col-1 my-auto">
-                    <div class="row">
-                        <button type="button" id="next_btn" class="btn btn-outline-warning mx-auto shadow" style="width: 5em; height: 5em;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
-                                <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41m-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9"/>
-                                <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z"/>
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="row mt-5">
-                        <button type="button" id="edit_btn" class="btn btn-outline-primary mx-auto shadow" style="width: 5em; height: 5em;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16">
-                                <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1 1 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4 4 0 0 1-.128-1.287z"/>
-                                <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243z"/>
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="row mt-5">
-                        <button type="button" id="count_btn" class="btn btn-outline-secondary mx-auto shadow" style="width: 5em; height: 5em;">
-                            <h1 class="mt-2">-</h1>
-                        </button>
-                    </div>
-                </div>
+                <div class="card mx-1 p-3 shadow" style="height: 100%;" id="iframe_wiki_card"></div>
             </div>
 
-            <!-- Riga risultati OPAC -->
-            <div class="row my-auto" style="height: max-content;">
-                <div class="row my-auto">
-                    <div class="row justify-content-center my-auto" style="width: 100%; margin-left: 1em;">
-                        <div class="card border-0 bg-transparent" id="iframe_opac_card">
-                            <div class="row m-1 bg-transparent" style="height: 100%;">
-                                <ul class="list-group list-group-horizontal overflow-x-auto justify-content-center bg-transparent" id="opac_list" style="width: 100%;"></ul>
-                            </div>
+            <!-- Bottoni sulla colonna di destra -->
+            <div class="col-1 d-flex flex-column justify-content-center" style="height: 100%;">
+                <!-- Bottoni sulla colonna di destra -->
+                <button type="button" id="info_btn" class="btn btn-outline-secondary menu-btn my-auto mx-auto shadow" style="width: 5em; height: 5em;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-info-lg" viewBox="0 0 16 16">
+                        <path d="m9.708 6.075-3.024.379-.108.502.595.108c.387.093.464.232.38.619l-.975 4.577c-.255 1.183.14 1.74 1.067 1.74.72 0 1.554-.332 1.933-.789l.116-.549c-.263.232-.65.325-.905.325-.363 0-.494-.255-.402-.704zm.091-2.755a1.32 1.32 0 1 1-2.64 0 1.32 1.32 0 0 1 2.64 0"/>
+                    </svg>
+                </button>
+                <!-- Bottoni sulla colonna di destra -->
+                <button type="button" id="next_btn" class="btn btn-outline-warning menu-btn my-auto mx-auto shadow" style="width: 5em; height: 5em;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+                        <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41m-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9"/>
+                        <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z"/>
+                    </svg>
+                </button>
+                <!-- Bottoni sulla colonna di destra -->
+                <button type="button" id="edit_btn" class="btn btn-outline-primary my-auto mx-auto shadow" style="width: 5em; height: 5em;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16">
+                        <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1 1 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4 4 0 0 1-.128-1.287z"/>
+                        <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243z"/>
+                    </svg>
+                </button>
+                <!-- Bottoni sulla colonna di destra -->
+                <button type="button" id="count_btn" class="btn btn-outline-secondary my-auto mx-auto shadow" style="width: 5em; height: 5em;">
+                    <div class="spinner-border mt-1" role="status"></div>
+                </button>
+            </div>
+        </div>
 
-                        </div>
+        <!-- Riga 2 -->
+        <div class="row half-height">
+            <div class="col" style="height: 100%;">
+                <div class="card border-0 bg-transparent" id="iframe_opac_card" style="height: 100%;">
+                    <div class="row m-1" style="height: 100%;">
+                        <!-- Lista risultati -->
+                        <ul class="list-group list-group-horizontal overflow-x-auto justify-content-center bg-transparent align-items-center" id="opac_list" style="width: 100%; height: 100%;"></ul>
                     </div>
                 </div>
             </div>
         </div>
-        
+    
     </div>
 
-
+    <!-- Info Modal -->
+    <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+            </div>
+            <!-- Contenuto README.md -->
+            <div class="modal-body" id="info-body"></div>
+          </div>
+        </div>
+    </div>
+    
     <!-- Status Modal -->
     <div class="modal fade" id="statusModal" tabindex="-1" role="dialog" aria-labelledby="loginModal" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
+                <!-- Esito operazione -->
                 <div id="status-body" class="modal-body text-center">
                     <div class="spinner-border" role="status"></div>
                 </div> 
@@ -88,11 +126,8 @@
         </div>
     </div>
 
-<!-- Includi Bootstrap JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+<!-- Funzione principale -->
 <script type="module" src="./index.js"></script>
     
 </body>
-
 </html>

@@ -1,5 +1,5 @@
 import { main } from "./js/main.js";
-import { getWikiToken, editWikiItem } from "./js/wiki.js";
+import { getWikiToken, editWikiItem, checkLoginStatus } from "./js/wiki.js";
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
@@ -30,11 +30,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         infoModal.show();
     });
 
+    const checkLogin = await checkLoginStatus() // Verifica credenziali
     const token = await getWikiToken()  // Ottieni token wikidata
 
-    if (!token) {
+    if (!checkLogin || !token) {
         alert(`Eseguire il login in Wikidata`)
-        return false
+        return false;
     }
 
     const itemId = await main(wikiCard, counterBtn, listGroupElement, token)

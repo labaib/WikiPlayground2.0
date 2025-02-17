@@ -59,7 +59,6 @@ Ad ogni modifica eeguita tramite il gioco viene attribuito un edit summary dal v
 
 
 ### Guida
-Il gioco è accessibile tramite una pagina web disponbile al link (https://logo94.github.io/WikiPlayground/)[https://logo94.github.io/WikiPlayground/]
 
 La pagina web si compone dei seguenti elementi:
 

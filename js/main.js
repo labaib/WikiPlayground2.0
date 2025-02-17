@@ -1,12 +1,14 @@
-import { randomItem, editWikiItem } from "./wiki.js";
+import { randomItemQuery } from "./sparql.js"
+import { sparqlQuery, editWikiItem } from "./wiki.js";
 import { opacApi } from "./opac.js"
 
 const main = async (wikiCard, counterBtn, listGroupElement, token) => {
 
     listGroupElement.innerHTML = ""
 
-    // Esegui la funzione asincrona per ottenere i dati
-    let wikiResponse = await randomItem();
+    // Ottieni elemento casuale
+    let wikiQuery = await randomItemQuery();
+    let wikiResponse = await sparqlQuery(wikiQuery);
     
     // Estrai l'ID dell'elemento (Qxxxx) dall'URL
     const itemId = wikiResponse.results.bindings[0].item.value.match(/Q\d+/)[0];

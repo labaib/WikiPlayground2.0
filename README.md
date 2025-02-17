@@ -38,6 +38,9 @@ WHERE
 
     # Esclude gli item che hanno una proprietà P396
     FILTER NOT EXISTS { ?item wdt:P396 [] . }
+
+    # Esclude gli item che hanno una proprietà P396 uguale a novalue
+    FILTER NOT EXISTS { ?item a wdno:P396 . }
 }
 OFFSET ${i}
 LIMIT 1

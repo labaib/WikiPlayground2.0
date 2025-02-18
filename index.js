@@ -12,6 +12,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     const editBtn = document.getElementById('edit_btn');
     const counterBtn = document.getElementById('count_btn');
 
+    const notFoundCard = document.createElement("div");
+    notFoundCard.className = "card text-center shadow my-auto"
+    notFoundCard.style.overflow = "hidden"
+    notFoundCard.style.width = "fit-content"
+
+    const notFoundCardBody = document.createElement("div");
+    notFoundCardBody.className = "card-body"
+    notFoundCardBody.innerHTML = `<h3 class="m-2">Nessun match trovato</h3>`
+        
+    const noValueBtn = document.createElement("button");
+    noValueBtn.className = "btn btn-outline-dark mt-2 mb-1"
+    noValueBtn.innerText = "novalue"
+
+    const notFoundElement = document.createElement("li");
+    notFoundElement.className = "list-group-item border-0 mx-1 bg-transparent my-auto"
+    notFoundCardBody.appendChild(noValueBtn)
+    notFoundCard.appendChild(notFoundCardBody)
+    notFoundElement.appendChild(notFoundCard)
+
     const listGroupElement = document.getElementById('opac_list');
 
     const infoModal = new bootstrap.Modal(document.getElementById('infoModal'));
@@ -38,7 +57,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         return false;
     }
 
-    const itemId = await main(wikiCard, counterBtn, listGroupElement, token)
+    const itemId = await main(wikiCard, counterBtn, listGroupElement, notFoundElement, token)
 
     if (!itemId) {
         location.reload()
@@ -99,6 +118,52 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             return true
         }
+
+    });
+
+    // Bottone inserimento novalue
+    noValueBtn.addEventListener('click', async (event) => {
+        event.preventDefault();
+
+        noValueBtn.setAttribute("disabled", "disabled");
+
+        const hr1 = document.createElement('hr')
+        const hr2 = document.createElement('hr')
+        const hr3 = document.createElement('hr')
+        notFoundCardBody.appendChild(hr1)
+
+        const inProgressLine = document.createElement('p')
+        inProgressLine.className = "my-1 mx-2"
+        inProgressLine.innerHTML = "Inserimento di <i>nessun valore</i> all'interno dell'elemento..."
+        notFoundCardBody.appendChild(inProgressLine)
+
+        const esitProgressLine = document.createElement('p')
+
+        const itemProgressLine = document.createElement('h5')
+        itemProgressLine.className = "my-1"
+        itemProgressLine.innerHTML = `<a class="text-decoration-none" href="https://www.wikidata.org/wiki/Item:${itemId}" target="_blank">${itemId}</a>`
+
+        let apiResponse = await editWikiItem(itemId, [], token);
+
+        if (apiResponse) {
+
+            notFoundCardBody.appendChild(hr2)
+            
+            esitProgressLine.className = "my-1 text-success"
+            esitProgressLine.innerHTML = "Proprietà P396 aggiornata correttamente a <i>nessun valore</i>"
+            notFoundCardBody.appendChild(esitProgressLine)
+
+        } else {
+
+            notFoundCardBody.appendChild(hr2)
+            esitProgressLine.className = "my-1 text-danger"
+            esitProgressLine.innerHTML = "Errore: elemento non aggiornato correttamente, procedere manualmente"
+            notFoundCardBody.appendChild(esitProgressLine)
+
+        }
+
+        notFoundCardBody.appendChild(hr3)
+        notFoundCardBody.appendChild(itemProgressLine)
 
     });
 

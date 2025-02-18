@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         return false;
     }
 
-    const itemId = await main(wikiCard, counterBtn, listGroupElement, notFoundElement, token)
+    const itemId = await main(wikiCard, counterBtn, listGroupElement, notFoundElement)
 
     if (!itemId) {
         location.reload()

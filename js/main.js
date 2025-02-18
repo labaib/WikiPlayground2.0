@@ -1,8 +1,8 @@
 import { randomItemQuery } from "./sparql.js"
-import { sparqlQuery, editWikiItem } from "./wiki.js";
+import { sparqlQuery } from "./wiki.js";
 import { opacApi } from "./opac.js"
 
-const main = async (wikiCard, counterBtn, listGroupElement, token) => {
+const main = async (wikiCard, counterBtn, listGroupElement, notFoundElement) => {
 
     listGroupElement.innerHTML = ""
 
@@ -29,52 +29,8 @@ const main = async (wikiCard, counterBtn, listGroupElement, token) => {
         counterBtn.className = "btn btn-outline-danger my-auto mx-auto shadow"
         counterBtn.innerHTML = `<h1 class="mt-2">0</h1>`
 
-        let notFoundElement = document.createElement("li")
-        notFoundElement.className = "list-group-item border-0 mx-1 bg-transparent my-auto"
-        notFoundElement.innerHTML = `
-        <div class="card text-center shadow my-auto" style="overflow: hidden; width: fit-content;">
-            <div class="card-body">
-                <h3 class="m-2">Nessun match trovato</h3>
-                <hr>
-                <p class="my-1">Inserimento di novalue all'interno dell'elemento...</p>
-            </div>
-        </div>
-        `
         listGroupElement.className = "list-group list-group-horizontal justify-content-center overflow-x-auto bg-transparent p-0"
         listGroupElement.appendChild(notFoundElement)
-
-        let apiResponse = await editWikiItem(itemId, [], token);
-
-        if (apiResponse) {
-            notFoundElement.innerHTML = `
-            <div class="card text-center shadow my-auto" style="overflow: hidden; width: fit-content;">
-                <div class="card-body">
-                    <h3 class="m-2">Nessun match trovato</h3>
-                    <hr>
-                    <p class="my-1 mx-2">Inserimento di <i>nessun valore</i> all'interno dell'elemento...</p>
-                    <hr>
-                    <p class="my-1 text-success">Proprietà P396 aggiornata correttamente a <i>nessun valore</i></p>
-                    <hr>
-                    <h5 class="my-1"><a class="text-decoration-none" href="https://www.wikidata.org/wiki/Item:${itemId}" target="_blank">${itemId}</a></h5>
-                </div>
-            </div>
-            `
-           
-        } else {
-            notFoundElement.innerHTML = `
-            <div class="card text-center shadow my-auto" style="overflow: hidden; width: fit-content;">
-                <div class="card-body">
-                    <h3 class="m-2">Nessun match trovato</h3><br>
-                    <hr>
-                    <p class="my-1 mx-2">Inserimento di <i>nessun valore</i> all'interno dell'elemento...</p>
-                    <hr>
-                    <p class="text-danger">Errore: elemento non aggiornato correttamente, procedere manualmente</p>
-                    <hr>
-                    <h5 class="my-1"><a class="text-decoration-none" href="https://www.wikidata.org/wiki/Item:${itemId}" target="_blank">${itemId}</a></h5>
-                </div>
-            </div>
-            `
-        }
 
         return itemId
 

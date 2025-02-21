@@ -8,8 +8,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     const wikiCard = document.getElementById('iframe_wiki_card');
 
     const infoBtn = document.getElementById('info_btn');
-    const nextBtn = document.getElementById('next_btn');
     const editBtn = document.getElementById('edit_btn');
+    const nextBtn = document.getElementById('next_btn');
+
+    const noticeBtn = document.getElementById('notice_btn');
     const counterBtn = document.getElementById('count_btn');
 
     const notFoundCard = document.createElement("div");
@@ -23,7 +25,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         
     const noValueBtn = document.createElement("button");
     noValueBtn.className = "btn btn-outline-dark mt-2 mb-1"
-    noValueBtn.innerText = "novalue"
+    noValueBtn.innerHTML = "<b>+</b> novalue"
 
     const notFoundElement = document.createElement("li");
     notFoundElement.className = "list-group-item border-0 mx-1 bg-transparent my-auto"
@@ -42,7 +44,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     editBtn.setAttribute("disabled", "disabled");
 
     // Bottone informazioni
-    infoBtn.addEventListener('click', async() => { 
+    infoBtn.addEventListener('click', async(event) => { 
+        event.preventDefault();
         let readmeFile = await fetch('README.md');
         let readme = await readmeFile.text()
         infoBody.innerHTML = marked.parse(readme)
@@ -64,7 +67,30 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // Bottone prossimo Item
-    nextBtn.addEventListener('click', async() => { location.reload() });
+    nextBtn.addEventListener('click', async () => { location.reload() });
+
+    // Apri pagina di segnalazione in una nuova scheda
+    noticeBtn.addEventListener('click', async (event) => {
+        event.preventDefault();
+
+        let label = window.itemLabel.replace(' ', '+')
+        
+        let now = new Date();
+        let year = now.getFullYear();
+        let currentMonth = now.getMonth() + 1; 
+        let month = currentMonth < 10 ? `0${currentMonth}` : currentMonth;
+
+        let customUrl = "https://www.wikidata.org/w/index.php"
+        customUrl += `?preloadtitle=${label}+(WikiPlayground)`
+        customUrl += `&preload=Wikidata:SBN/Error%20reports/preload`
+        customUrl += `&preloadparams[]=${label}`
+        customUrl += `&title=Wikidata:SBN/Error%20reports/${year}/${month}`
+        customUrl += `&section=new&action=edit`
+
+        window.open(customUrl, "_blank");
+
+        return true
+    });
 
     // Bottone modifica Item
     editBtn.addEventListener('click', async (event) => {

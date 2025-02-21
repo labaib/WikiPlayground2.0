@@ -15,10 +15,11 @@ const main = async (wikiCard, counterBtn, listGroupElement, notFoundElement) => 
     
     // Estrai l'etichetta (label) dell'elemento
     const itemLabel = wikiResponse.results.bindings[0].itemLabel.value;
+    window.itemLabel = itemLabel;
     
     // IFrame Elemento Wikidata
     wikiCard.innerHTML = `
-        <iframe class="card-img-top" src="https://www.wikidata.org/wiki/Item:${itemId}" style="height: 100%; width: 100%; border: none;" title="Wiki Random Page"></iframe>
+        <iframe class="card-img-top" src="https://m.wikidata.org/wiki/Item:${itemId}" style="height: 100%; width: 100%; border: none;" title="Wiki Random Page"></iframe>
     `
     // Ottieni candidati da API OPAC SBN
     let candidates = await opacApi(itemLabel)

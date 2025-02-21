@@ -47,7 +47,7 @@
         
         <!-- Riga 1 -->
         <div class="row half-height">
-            <div class="col-11" style="height: 100%;">
+            <div class="col-10" style="height: 100%;">
                 <!-- Wikidata Main iFrame -->
                 <div class="card mx-1 p-3 shadow" style="height: 100%;" id="iframe_wiki_card"></div>
             </div>
@@ -55,24 +55,36 @@
             <!-- Bottoni sulla colonna di destra -->
             <div class="col-1 d-flex flex-column justify-content-center" style="height: 100%;">
                 <!-- Informazioni -->
-                <button type="button" id="info_btn" class="btn btn-outline-secondary menu-btn my-auto mx-auto shadow" style="width: 5em; height: 5em;">
+                <button type="button" id="info_btn" class="btn btn-outline-secondary menu-btn my-auto mx-auto shadow" style="width: 5em; height: 5em;" data-bs-toggle="tooltip" title="Informazioni">
                     <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-info-lg" viewBox="0 0 16 16">
                         <path d="m9.708 6.075-3.024.379-.108.502.595.108c.387.093.464.232.38.619l-.975 4.577c-.255 1.183.14 1.74 1.067 1.74.72 0 1.554-.332 1.933-.789l.116-.549c-.263.232-.65.325-.905.325-.363 0-.494-.255-.402-.704zm.091-2.755a1.32 1.32 0 1 1-2.64 0 1.32 1.32 0 0 1 2.64 0"/>
                     </svg>
                 </button>
+                <!-- Inserisci ID SBN -->
+                <button type="button" id="edit_btn" class="btn btn-outline-primary my-auto mx-auto shadow" style="width: 5em; height: 5em;" data-bs-toggle="tooltip" title="Importa">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16">
+                        <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1 1 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4 4 0 0 1-.128-1.287z"/>
+                        <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243z"/>
+                    </svg>
+                </button>
                 <!-- Prossimo elemento -->
-                <button type="button" id="next_btn" class="btn btn-outline-warning menu-btn my-auto mx-auto shadow" style="width: 5em; height: 5em;">
+                <button type="button" id="next_btn" class="btn btn-outline-warning menu-btn my-auto mx-auto shadow" style="width: 5em; height: 5em;" data-bs-toggle="tooltip" title="Prossimo elemento">
                     <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
                         <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41m-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9"/>
                         <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z"/>
                     </svg>
                 </button>
-                <!-- Inserisci ID SBN -->
-                <button type="button" id="edit_btn" class="btn btn-outline-primary my-auto mx-auto shadow" style="width: 5em; height: 5em;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16">
-                        <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1 1 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4 4 0 0 1-.128-1.287z"/>
-                        <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243z"/>
-                    </svg>
+            </div>
+            <div class="col-1 d-flex flex-column justify-content-center" style="height: 100%; padding-left: 0;">
+                <!-- Link GitHub -->
+                <a type="button" href="https://opac.sbn.it/voci-controllate-nomi" target="_blank" class="btn btn-outline-dark my-auto mx-auto shadow" style="width: 5em; height: 5em;" data-bs-toggle="tooltip" title="Ricerca avanzata OPAC SBN">
+                    <img src="img/user.png" alt="Icona"  width="33" height="33" style="margin-left: 0.6em; margin-top: 1.1em;" >
+                </a>
+                <!-- Segnala elemento -->
+                <button type="button" id="notice_btn" class="btn btn-outline-danger menu-btn my-auto mx-auto shadow" style="width: 5em; height: 5em;" data-bs-toggle="tooltip" title="Segnala problema">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-cone-striped" viewBox="0 0 16 16">
+                        <path d="m9.97 4.88.953 3.811C10.159 8.878 9.14 9 8 9s-2.158-.122-2.923-.309L6.03 4.88C6.635 4.957 7.3 5 8 5s1.365-.043 1.97-.12m-.245-.978L8.97.88C8.718-.13 7.282-.13 7.03.88L6.275 3.9C6.8 3.965 7.382 4 8 4s1.2-.036 1.725-.098m4.396 8.613a.5.5 0 0 1 .037.96l-6 2a.5.5 0 0 1-.316 0l-6-2a.5.5 0 0 1 .037-.96l2.391-.598.565-2.257c.862.212 1.964.339 3.165.339s2.303-.127 3.165-.339l.565 2.257z"/>
+                      </svg>
                 </button>
                 <!-- Status / Risultati -->
                 <button type="button" id="count_btn" class="btn btn-outline-secondary my-auto mx-auto shadow" style="width: 5em; height: 5em;">

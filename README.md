@@ -78,10 +78,10 @@ La pagina si articola in due 3 blocchi di contenuti:
 | --- | --- | 
 | &nbsp;<div align="center"><img height="25" src="img/info-lg.svg"></div>&nbsp; | accedi alle informazioni sull'applicazione e alle statistiche |
 | &nbsp;<div align="center"><img height="25" src="img/user.png"></div>&nbsp; | vai alla ricerca avanzata dei nomi in SBN |
-| &nbsp;<div align="center"><img height="25" src="img/link-45deg.svg"></div>&nbsp; | inserisci proprità P396 con valore ID SBN |
-| &nbsp;<div align="center"><img height="25" src="img/cone-striped.svg"></div>&nbsp; | segnala errore in OPAC per entità |
+| &nbsp;<div align="center"><img height="25" src="img/link-45deg.svg"></div>&nbsp; | inserisci proprietà P396 con valore ID SBN |
+| &nbsp;<div align="center"><img height="25" src="img/cone-striped.svg"></div>&nbsp; | segnala errore in OPAC |
 | &nbsp;<div align="center"><img height="25" src="img/arrow-repeat.svg"></div>&nbsp; | carica il prossimo elemento casuale |
-| &nbsp;<div align="center"><img height="25" src="img/123.svg"></div>&nbsp; | status / numero di metch trovati in OPAC |
+| &nbsp;<div align="center"><img height="25" src="img/123.svg"></div>&nbsp; | status / numero di match trovati in OPAC |
 <br>
 
 

@@ -66,6 +66,7 @@ La pagina si articola in due 3 blocchi di contenuti:
   <img src="img/wp-tutorial.png">
 </div>
 <br>
+
 1. iFrame contente l'elemento wikidata selezionato casualmente
 2. bottoni per l'interazione con la pagina
 3. lista dei match trovati nell'OPAC SBN
@@ -73,14 +74,14 @@ La pagina si articola in due 3 blocchi di contenuti:
 
 
 ### Bottoni
-| Bottone | Funzione |
+| Icona | Funzione |
 | --- | --- | 
-| <div align="center"><img height="25" src="img/info-lg.svg"></div> | accedi alle informazioni sull'applicazione e alle statistiche |
-| <div align="center"><img height="25" src="img/user.png"></div> | vai alla ricerca avanzata dei nomi in SBN |
-| <div align="center"><img height="25" src="img/link-45deg.svg"></div> | inserisci proprità P396 con valore ID SBN |
-| <div align="center"><img height="25" src="img/cone-striped.svg"></div> | segnala errore in OPAC per entità |
-| <div align="center"><img height="25" src="img/arrow-repeat.svg"></div> | carica il prossimo elemento casuale |
-| <div align="center"><img height="25" src="img/123.svg"></div> | status / numero di metch trovati in OPAC |
+| &nbsp;<div align="center"><img height="25" src="img/info-lg.svg"></div>&nbsp; | accedi alle informazioni sull'applicazione e alle statistiche |
+| &nbsp;<div align="center"><img height="25" src="img/user.png"></div>&nbsp; | vai alla ricerca avanzata dei nomi in SBN |
+| &nbsp;<div align="center"><img height="25" src="img/link-45deg.svg"></div>&nbsp; | inserisci proprità P396 con valore ID SBN |
+| &nbsp;<div align="center"><img height="25" src="img/cone-striped.svg"></div>&nbsp; | segnala errore in OPAC per entità |
+| &nbsp;<div align="center"><img height="25" src="img/arrow-repeat.svg"></div>&nbsp; | carica il prossimo elemento casuale |
+| &nbsp;<div align="center"><img height="25" src="img/123.svg"></div>&nbsp; | status / numero di metch trovati in OPAC |
 <br>
 
 

@@ -89,7 +89,7 @@ La pagina si articola in due 3 blocchi di contenuti:
 <br>
 
 <div align="center">
-  <img src="https://github.com/logo94/WikiPlayground/blob/main/img/wp-opac-tutorial.png">
+  <img src="img/wp-opac-tutorial.png">
 </div>
 <br>
 

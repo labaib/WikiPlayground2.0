@@ -5,6 +5,8 @@ const delay = ms => new Promise(res => setTimeout(res, ms));
 
 document.addEventListener("DOMContentLoaded", async () => {
 
+    const statusBadge = document.getElementById('login_status_badge');
+
     const wikiCard = document.getElementById('iframe_wiki_card');
 
     const infoBtn = document.getElementById('info_btn');
@@ -59,6 +61,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         alert(`Eseguire il login in Wikidata`)
         return false;
     }
+    
+    statusBadge.className = "alert alert-success text-success m-0 px-2 pt-1"
+    statusBadge.innerText = "Connesso"
 
     const itemId = await main(wikiCard, counterBtn, listGroupElement, notFoundElement)
 

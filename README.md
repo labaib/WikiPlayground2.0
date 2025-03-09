@@ -7,8 +7,8 @@ Gioco per la riconciliazione delle entità SBN con gli Items Wikidata
 ## Link utili
 | Link | Descrizione |
 | --- | --- |
-| [WikiPlayground](https://logo94.github.io/WikiPlayground/) | pagina web applicazione |
-| [GitHub](https://github.com/logo94/WikiPlayground) | repository codice |
+| [WikiPlayground](https://labaib.github.io/WikiPlayground/) | pagina web applicazione |
+| [GitHub](https://github.com/labaib/WikiPlayground) | repository codice |
 | [Q132260000](https://www.wikidata.org/wiki/Q132260000) | elemento Wikidata applicazione |
 | [Property talk:P396](https://www.wikidata.org/wiki/Property_talk:P396) | pagina progetto ICCU |
 | [Laboratorio Stelline 2025](https://www.wikidata.org/wiki/Wikidata:Gruppo_AIB_TBID/Stelline/2025) | pagina Wikidata del laboratorio organizzato in occasione del Convegno delle Stelline 2025 |

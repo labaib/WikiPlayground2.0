@@ -30,7 +30,7 @@
         .flex-container {
             display: flex;
             flex-direction: column;
-            height: 100%;
+            height: 93%;
         }
         .half-height {
             flex: 1;
@@ -43,17 +43,43 @@
 </head>
 <body>
 
-    <div class="flex-container p-3">
+    <!-- Barra di navigazione -->
+    <nav class="navbar navbar-expand-lg w-100 navbar-light bg-light">
+        <ul class="navbar-nav  d-flex justify-content-between w-100 mx-3">
+            <li class="nav-item dropdown">
+                <button class="nav-link dropdown-toggler" id="navbarDropdown" role="button" data-bs-toggle="dropdown"  aria-haspopup="true" aria-expanded="false">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="https://www.wikidata.org/w/index.php?title=Special:UserLogin" target="_blank">Login</a>
+                    <a class="dropdown-item" href="https://github.com/labaib/WikiPlayground/blob/main/README.md" target="_blank">Guida</a>
+                    <a class="dropdown-item" href="https://labaib.github.io/WikiPlayground/stats.html" target="_blank">Statistiche</a>
+                    <a class="dropdown-item" href="https://www.wikidata.org/wiki/Property_talk:P396" target="_blank">Proprietà P396</a>
+                    <a class="dropdown-item" href="https://query.wikidata.org/" target="_blank">Query Service</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="https://github.com/labaib/WikiPlayground" target="_blank">Github</a>
+                </div>
+            </li>
+            <li class="nav-item my-auto">
+                <a class="navbar-brand" href="/"><b><i>WikiPlayground</i></b></a>
+            </li>
+            <li class="nav-item my-auto">
+                <div id="login_status_badge" class="alert alert-danger text-danger m-0 px-2 pt-1" role="alert" style="height: 2em;">Non connesso</div>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="flex-container px-3">
         
         <!-- Riga 1 -->
         <div class="row half-height">
-            <div class="col-10" style="height: 100%;">
+            <div class="col-10" style="height: 90%;">
                 <!-- Wikidata Main iFrame -->
                 <div class="card mx-1 p-3 shadow" style="height: 100%;" id="iframe_wiki_card"></div>
             </div>
 
             <!-- Bottoni sulla colonna di destra -->
-            <div class="col-1 d-flex flex-column justify-content-center" style="height: 100%;">
+            <div class="col-1 d-flex flex-column justify-content-center" style="height: 80%;">
                 <!-- Informazioni -->
                 <button type="button" id="info_btn" class="btn btn-outline-secondary menu-btn my-auto mx-auto shadow" style="width: 5em; height: 5em;" data-bs-toggle="tooltip" title="Informazioni">
                     <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-info-lg" viewBox="0 0 16 16">
@@ -75,7 +101,7 @@
                     </svg>
                 </button>
             </div>
-            <div class="col-1 d-flex flex-column justify-content-center" style="height: 100%; padding-left: 0;">
+            <div class="col-1 d-flex flex-column justify-content-center" style="height: 80%; padding-left: 0;">
                 <!-- Link GitHub -->
                 <a type="button" href="https://opac.sbn.it/voci-controllate-nomi" target="_blank" class="btn btn-outline-dark my-auto mx-auto shadow" style="width: 5em; height: 5em;" data-bs-toggle="tooltip" title="Ricerca avanzata OPAC SBN">
                     <img src="img/user.png" alt="Icona"  width="33" height="33" style="margin-left: 0.6em; margin-top: 1.1em;" >

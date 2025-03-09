@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const checkLogin = await getWikiUserInfo("www.wikidata.org") // Verifica credenziali
     const token = await getWikiToken()  // Ottieni token wikidata
 
-    if (!checkLogin || !token) {
+    if (!checkLogin?.id || !token) {
         alert(`Eseguire il login in Wikidata`)
         return false;
     }

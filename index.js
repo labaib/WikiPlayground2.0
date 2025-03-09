@@ -1,11 +1,13 @@
 import { main } from "./js/main.js";
 import { getWikiToken, editWikiItem, checkLoginStatus } from "./js/wiki.js";
+import { getWikiUserInfo } from 'https://cdn.jsdelivr.net/gh/labaib/getWikiUserInfo@main/index.js';
+
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
 document.addEventListener("DOMContentLoaded", async () => {
 
-    const statusBadge = document.getElementById('login_status_badge');
+    const login_status = document.getElementById('login_status');
 
     const wikiCard = document.getElementById('iframe_wiki_card');
 
@@ -54,16 +56,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         infoModal.show();
     });
 
-    const checkLogin = await checkLoginStatus() // Verifica credenziali
+    const checkLogin = await getWikiUserInfo("www.wikidata.org") // Verifica credenziali
     const token = await getWikiToken()  // Ottieni token wikidata
 
     if (!checkLogin || !token) {
         alert(`Eseguire il login in Wikidata`)
         return false;
     }
-    
-    statusBadge.className = "alert alert-success text-success m-0 px-2 pt-1"
-    statusBadge.innerText = "Connesso"
+
+    login_status.className = "alert alert-success text-success m-0 px-2 pt-1"
+    login_status.innerText = `${checkLogin.name}`
 
     const itemId = await main(wikiCard, counterBtn, listGroupElement, notFoundElement)
 

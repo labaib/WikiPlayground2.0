@@ -1,6 +1,6 @@
 import { main } from "./js/main.js";
 import { getWikiToken, editWikiItem, checkLoginStatus } from "./js/wiki.js";
-import { getWikiUserInfo } from 'https://cdn.jsdelivr.net/gh/labaib/getWikiUserInfo@main/index.js';
+import { getWikiUserInfo } from 'https://cdn.jsdelivr.net/gh/logo94/getWikiUserInfo@main/index.js';
 
 
 const delay = ms => new Promise(res => setTimeout(res, ms));

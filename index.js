@@ -1,7 +1,7 @@
 import { main } from "./js/main.js";
 import { getWikiToken, editWikiItem, checkLoginStatus } from "./js/wiki.js";
 import { getWikiUserInfo } from 'https://cdn.jsdelivr.net/gh/logo94/getWikiUserInfo@main/index.js';
-
+import { getWikiAuthToken } from 'https://cdn.jsdelivr.net/gh/labaib/getWikiAuthToken@main/index.js';
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     const checkLogin = await getWikiUserInfo("cors-proxy.readinmonkey.workers.dev/proxy") // Verifica credenziali
-    const token = await getWikiToken()  // Ottieni token wikidata
+    const token = await getWikiAuthToken("cors-proxy.readinmonkey.workers.dev/proxy")  // Ottieni token wikidata
 
     if (!checkLogin || !token) {
         alert(`Eseguire il login in Wikidata`)

@@ -2,6 +2,9 @@ import { randomItemQuery } from "./sparql.js"
 import { sparqlQuery } from "./wiki.js";
 import { opacApi } from "./opac.js"
 
+import { searchOpacNamesByLabel } from 'https://cdn.jsdelivr.net/gh/logo94/searchOpacNamesByLabel@main/index.js';
+
+
 const main = async (wikiCard, counterBtn, listGroupElement, notFoundElement) => {
 
     listGroupElement.innerHTML = ""
@@ -22,7 +25,7 @@ const main = async (wikiCard, counterBtn, listGroupElement, notFoundElement) => 
         <iframe class="card-img-top" src="https://www.wikidata.org/wiki/Item:${itemId}" style="height: 100%; width: 100%; border: none;" title="Wiki Random Page"></iframe>
     `
     // Ottieni candidati da API OPAC SBN
-    let candidates = await opacApi(itemLabel)
+    let candidates = await searchOpacNamesByLabel("cors-proxy.readinmonkey.workers.dev/opac", itemLabel)
 
     // Se non ci sono match viene inserito il valore novalue
     if (candidates.length === 0) {

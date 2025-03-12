@@ -56,8 +56,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         infoModal.show();
     });
 
-    const checkLogin = await getWikiUserInfo("cors-proxy.readinmonkey.workers.dev/proxy") // Verifica credenziali
-    const token = await getWikiAuthToken("cors-proxy.readinmonkey.workers.dev/proxy")  // Ottieni token wikidata
+    const checkLogin = await getWikiUserInfo("cors-proxy.readinmonkey.workers.dev/wikidata") // Verifica credenziali
+    const token = await getWikiAuthToken("cors-proxy.readinmonkey.workers.dev/wikidata")  // Ottieni token wikidata
 
     if (!checkLogin || !token) {
         alert(`Eseguire il login in Wikidata`)

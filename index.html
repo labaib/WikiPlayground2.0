@@ -13,36 +13,26 @@
     <!-- Descrizione pagina -->
     <title>WikiPlayground</title>
     <meta name="description" content="Gioco per la riconciliazione delle entità SBN con Wikidata">
-    <meta name="keywords" content="SBN, Wikidata, Wiki, Gaming">
+    <meta name="keywords" content="SBN, wikidata, wiki, gamification">
     <meta name="author" content="https://github.com/logo94">
 
     <!-- Includi Librerie JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
+    <!-- Includi CodeMirror CSS e JS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/theme/material.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/mode/sparql/sparql.min.js"></script>
+
     <!-- Includi Librerie CSS e stile -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-        }
-        .flex-container {
-            display: flex;
-            flex-direction: column;
-            height: 93%;
-        }
-        .half-height {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-    </style>
+    <link rel="stylesheet" href="./css/style.css">
 
 </head>
 <body>
-
+    
     <!-- Barra di navigazione -->
     <nav class="navbar navbar-expand-lg w-100 navbar-light bg-light position-relative">
         <ul class="navbar-nav d-flex justify-content-between w-100 mx-3">
@@ -64,103 +54,129 @@
                 <a class="navbar-brand" href="/WikiPlayground/"><b><i>WikiPlayground</i></b></a>
             </li>
             <li class="nav-item my-auto">
-                <div id="login_status" class="alert alert-danger text-danger m-0 px-2 pt-1" role="alert" style="height: 2em;">Non connesso</div>
+                <div id="login_status" class="alert alert-danger text-danger m-0 px-2 pt-1" role="alert" style="height: 2em;">Connesso</div>
             </li>
         </ul>
     </nav>
 
-    <div class="flex-container px-3">
-        
-        <!-- Riga 1 -->
-        <div class="row half-height">
-            <div class="col-10" style="height: 90%;">
-                <!-- Wikidata Main iFrame -->
-                <div class="card mx-1 p-3 shadow" style="height: 100%;" id="iframe_wiki_card"></div>
+    <div class="flex-container h-90 overflow-y-auto mt-3">
+        <div class="accordion mx-5 h-75" id="mainAccordion">
+            <!-- Prima riga -->
+            <div class="accordion-item border-0">
+                <h2 class="accordion-header mx-auto bg-light" id="headingOne" style="width: fit-content;">
+                    <button class="accordion-button w-100 text-center" type="button" data-bs-toggle="collapse" data-bs-target="#sparql_row" aria-expanded="true" aria-controls="sparql_row">
+                        Query SPARQL 
+                    </button>
+                </h2>
+                <div id="sparql_row" class="accordion-collapse collapse show h-100" aria-labelledby="headingOne" data-bs-parent="#mainAccordion">
+                    <div class="accordion-body w-75 mx-auto border-0 my-5">
+                        <form class="my-auto">
+                            <div class="form-group h-50">
+                                <textarea class="form-control" id="query_sparql" rows="20"></textarea>
+                            </div>
+                            <button id="start_sparql" type="button" class="btn btn-success w-100 mt-3">
+                                Cerca
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
-
-            <!-- Bottoni sulla colonna di destra -->
-            <div class="col-1 d-flex flex-column justify-content-center" style="height: 80%;">
-                <!-- Informazioni -->
-                <button type="button" id="info_btn" class="btn btn-outline-secondary menu-btn my-auto mx-auto shadow" style="width: 5em; height: 5em;" data-bs-toggle="tooltip" title="Informazioni">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-info-lg" viewBox="0 0 16 16">
-                        <path d="m9.708 6.075-3.024.379-.108.502.595.108c.387.093.464.232.38.619l-.975 4.577c-.255 1.183.14 1.74 1.067 1.74.72 0 1.554-.332 1.933-.789l.116-.549c-.263.232-.65.325-.905.325-.363 0-.494-.255-.402-.704zm.091-2.755a1.32 1.32 0 1 1-2.64 0 1.32 1.32 0 0 1 2.64 0"/>
-                    </svg>
-                </button>
-                <!-- Inserisci ID SBN -->
-                <button type="button" id="edit_btn" class="btn btn-outline-primary my-auto mx-auto shadow" style="width: 5em; height: 5em;" data-bs-toggle="tooltip" title="Importa">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16">
-                        <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1 1 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4 4 0 0 1-.128-1.287z"/>
-                        <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243z"/>
-                    </svg>
-                </button>
-                <!-- Prossimo elemento -->
-                <button type="button" id="next_btn" class="btn btn-outline-warning menu-btn my-auto mx-auto shadow" style="width: 5em; height: 5em;" data-bs-toggle="tooltip" title="Prossimo elemento">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
-                        <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41m-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9"/>
-                        <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z"/>
-                    </svg>
-                </button>
-            </div>
-            <div class="col-1 d-flex flex-column justify-content-center" style="height: 80%; padding-left: 0;">
-                <!-- Link GitHub -->
-                <a type="button" href="https://opac.sbn.it/voci-controllate-nomi" target="_blank" class="btn btn-outline-dark my-auto mx-auto shadow" style="width: 5em; height: 5em;" data-bs-toggle="tooltip" title="Ricerca avanzata OPAC SBN">
-                    <img src="img/user.png" alt="Icona"  width="33" height="33" style="margin-left: 0.6em; margin-top: 1.1em;" >
-                </a>
-                <!-- Segnala elemento -->
-                <button type="button" id="notice_btn" class="btn btn-outline-danger menu-btn my-auto mx-auto shadow" style="width: 5em; height: 5em;" data-bs-toggle="tooltip" title="Segnala problema">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-cone-striped" viewBox="0 0 16 16">
-                        <path d="m9.97 4.88.953 3.811C10.159 8.878 9.14 9 8 9s-2.158-.122-2.923-.309L6.03 4.88C6.635 4.957 7.3 5 8 5s1.365-.043 1.97-.12m-.245-.978L8.97.88C8.718-.13 7.282-.13 7.03.88L6.275 3.9C6.8 3.965 7.382 4 8 4s1.2-.036 1.725-.098m4.396 8.613a.5.5 0 0 1 .037.96l-6 2a.5.5 0 0 1-.316 0l-6-2a.5.5 0 0 1 .037-.96l2.391-.598.565-2.257c.862.212 1.964.339 3.165.339s2.303-.127 3.165-.339l.565 2.257z"/>
-                      </svg>
-                </button>
-                <!-- Status / Risultati -->
-                <button type="button" id="count_btn" class="btn btn-outline-secondary my-auto mx-auto shadow" style="width: 5em; height: 5em;">
-                    <div class="spinner-border mt-1" role="status"></div>
-                </button>
-            </div>
-        </div>
-
-        <!-- Riga 2 -->
-        <div class="row half-height">
-            <div class="col" style="height: 100%;">
-                <div class="card border-0 bg-transparent" id="iframe_opac_card" style="height: 100%;">
-                    <div class="row m-1" style="height: 100%;">
-                        <!-- Lista risultati -->
-                        <ul class="list-group list-group-horizontal overflow-x-auto justify-content-center bg-transparent align-items-center" id="opac_list" style="width: 100%; height: 100%;"></ul>
+            <!-- Seconda riga -->
+            <div class="accordion-item border-0 h-75 overflow-y-auto">
+                <div id="results_row" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#mainAccordion">
+                    <div class="accordion-body w-75 mx-auto">
+                        <ul id="wiki_list" class="list-group mx-auto" hidden>
+                            <!-- Risultati dinamici verranno inseriti qui -->
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
-    
     </div>
 
-    <!-- Info Modal -->
-    <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-                <a class="btn btn-outline-dark" href="/WikiPlayground/stats.html" target="_blank" role="button">Statistiche</a>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
-            </div>
-            <!-- Contenuto README.md -->
-            <div class="modal-body overflow-y-auto" id="info-body" style="height: 50em;"></div>
-          </div>
-        </div>
-    </div>
-    
-    <!-- Status Modal -->
-    <div class="modal fade" id="statusModal" tabindex="-1" role="dialog" aria-labelledby="loginModal" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <!-- Esito operazione -->
-                <div id="status-body" class="modal-body text-center">
-                    <div class="spinner-border" role="status"></div>
-                </div> 
-            </div>
-        </div>
-    </div>
 
-<!-- Funzione principale -->
+<!-- Modal -->
+<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content" style="height: 80vh;">
+            <div class="modal-body">
+                <div class="row my-auto h-100 w-100">
+
+                    <div class="col-6 d-flex flex-column" style="height: 75vh;">
+                        <div class="accordion h-100" id="modalAccordion">
+                            <!-- Prima riga -->
+                            <div class="accordion-item border-0">
+                                <h2 class="accordion-header mx-auto bg-light" id="wikiItem" style="width: fit-content;">
+                                    <button class="accordion-button w-100 text-center" type="button" data-bs-toggle="collapse" data-bs-target="#wiki_item_row" aria-expanded="true" aria-controls="wiki_item_row">
+                                        Elemento Wikidata
+                                    </button>
+                                </h2>
+                                <div id="wiki_item_row" class="accordion-collapse collapse show" aria-labelledby="wikiItem" data-bs-parent="#modalAccordion">
+                                    <div class="accordion-body mx-auto border-0 overflow-hidden overflow-y-auto" style="height: 60vh;">
+                                        <ul id="wiki-box" class="list-group px-3 w-100" ></ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Seconda riga -->
+                            <div class="accordion-item border-0 overflow-y-auto">
+                                <h2 class="accordion-header mx-auto bg-light" id="viafWorks" style="width: fit-content;">
+                                    <button class="accordion-button w-100 text-center collapsed" type="button" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#viaf_works_row" aria-controls="viaf_works_row">
+                                        Documenti collegati 
+                                        <span id="viaf-counter" class="badge bg-light rounded text-dark mx-2"></span>
+                                    </button>
+                                </h2>
+                                <div id="viaf_works_row" class="accordion-collapse collapse" aria-labelledby="viafWorks" data-bs-parent="#modalAccordion">
+                                    <div class="accordion-body mx-auto border-0" style="height: 60vh;">
+                                        <ul id="viaf-box" class="list-group p-3 w-100 mt-1"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-6 h-100 d-flex flex-column custom-row">
+                        <ul id="opac-box" class="container m-auto p-auto w-100 h-80 overflow-y-auto" style="height: 60vh;"></ul>
+                        <ul id="opac-detail" class="container m-auto p-auto w-100 h-80 overflow-y-auto" style="height: 60vh;" hidden></ul>
+                        <div class="row h-20 justify-content-center">
+                            <!-- Indietro -->
+                            <button type="button" id="back_btn" class="btn btn-outline-warning my-auto mx-2 shadow" style="width: 3em; height: 3em;" data-bs-toggle="tooltip" title="Inserisci novalue">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+                                  </svg>
+                            </button>
+                            <!-- Cerca nome in OPAC SBN -->
+                            <a type="button" href="https://opac.sbn.it/voci-controllate-nomi" onclick="window.open(this.href, '_blank'); return false;" target="_blank" class="btn btn-outline-dark my-auto mx-2 shadow" style="width: 3em; height: 3em;" data-bs-toggle="tooltip" title="Ricerca avanzata OPAC SBN">
+                                <img src="img/user.png" alt="Icona"  width="25" height="25" style="margin-left: 0.1em; margin-top: 0.3em;" >
+                            </a>
+                            <!-- Segnala -->
+                            <button type="button" id="notice_btn" class="btn btn-outline-danger menu-btn my-auto mx-2 shadow" style="width: 3em; height: 3em;" data-bs-toggle="tooltip" title="Segnala problema">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-cone-striped" viewBox="0 0 16 16">
+                                    <path d="m9.97 4.88.953 3.811C10.159 8.878 9.14 9 8 9s-2.158-.122-2.923-.309L6.03 4.88C6.635 4.957 7.3 5 8 5s1.365-.043 1.97-.12m-.245-.978L8.97.88C8.718-.13 7.282-.13 7.03.88L6.275 3.9C6.8 3.965 7.382 4 8 4s1.2-.036 1.725-.098m4.396 8.613a.5.5 0 0 1 .037.96l-6 2a.5.5 0 0 1-.316 0l-6-2a.5.5 0 0 1 .037-.96l2.391-.598.565-2.257c.862.212 1.964.339 3.165.339s2.303-.127 3.165-.339l.565 2.257z"/>
+                                </svg>
+                            </button>
+                            <!-- Inserisci novalue -->
+                            <button type="button" id="novalue_btn" class="btn btn-outline-secondary my-auto mx-2 shadow" style="width: 3em; height: 3em;" data-bs-toggle="tooltip" title="Inserisci novalue">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                                </svg>
+                            </button>
+                            <!-- Inserisci ID SBN -->
+                            <button type="button" id="edit_btn" class="btn btn-outline-primary my-auto mx-2 shadow" style="width: 3em; height: 3em;" data-bs-toggle="tooltip" title="Importa" disabled>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16">
+                                    <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1 1 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4 4 0 0 1-.128-1.287z"/>
+                                    <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="module" src="./index.js"></script>
-    
+
 </body>
 </html>

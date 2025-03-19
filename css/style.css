@@ -1,0 +1,30 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+::-webkit-scrollbar-track {
+background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+background: #3B71CA;
+}
+
+::-webkit-scrollbar-thumb:hover {
+background: #9e9d9d;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: white;
+}
+
+.custom-row {
+    flex: 1; 
+    min-height: 0;
+}

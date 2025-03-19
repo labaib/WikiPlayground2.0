@@ -60,18 +60,6 @@ Ad ogni modifica eeguita tramite il gioco viene attribuito un edit summary dal v
 
 ### Componenti
 
-La pagina si articola in due 3 blocchi di contenuti:
-
-<div align="center">
-  <img src="img/wp-tutorial.png">
-</div>
-<br>
-
-1. iFrame contente l'elemento wikidata selezionato casualmente
-2. bottoni per l'interazione con la pagina
-3. lista dei match trovati nell'OPAC SBN
-<br>
-
 
 ### Bottoni
 | Icona | Funzione |
@@ -85,21 +73,7 @@ La pagina si articola in due 3 blocchi di contenuti:
 <br>
 
 
-### Scheda candidato OPAC SBN
-<br>
-
-<div align="center">
-  <img src="img/wp-opac-tutorial.png">
-</div>
-<br>
-
-A. IFrame pagina OPAC SBN<br>
-B. Link alla pagina OPAC relativa alla persona<br>
-C. Link alle pubblicazioni della persona <br>
-D. Switch per la selezione del match per l'import automatico di ID e Label in Wikidata<br>
-
 
 
 ### Future implementazioni
-* Aggiunta dinamica della query di partenza
 * Gestione dinamica del dominio (per istanze Wikibase)

@@ -1,32 +1,43 @@
-// Ottieni numero casuale per quesry SPARQL
-const getRandomInt = async (min, max) => {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
 const randomItemQuery = async () => {
-    let i = await getRandomInt(1, 10000) // Numero randomico per offset (ORDER BY RAND() rallenta di molto la query)
-    let query = `
-    SELECT DISTINCT ?item ?itemLabel
-    WHERE
-    {
-        # Filtra gli item con cittadinanza italiana (Q38) o italiana (Q172579)
-        VALUES ?v { wd:Q172579 wd:Q38 }
-        ?item wdt:P27 ?v ;  # P27 = paese di cittadinanza
-                wdt:P214 [] . # P214 = identificativo VIAF
+    let query = `SELECT DISTINCT ?item ?itemLabel ?itemDescription ?itemAltLabel ?image ?statementCount ?sitelinkCount ?lastModified
+WHERE
+{
+    ######################################################################
+    # Modificare questo blocco
+    VALUES ?v { wd:Q172579 wd:Q38 }
+    ?item wdt:P27 ?v ;  # P27 = paese di cittadinanza
+            wdt:P214 [] . # P214 = identificativo VIAF
 
-        # Filtra per etichette in italiano
-        ?item rdfs:label ?itemLabel . FILTER(LANG(?itemLabel) = "it")
+    ######################################################################
 
-        # Esclude gli item che hanno una proprietà P396
-        FILTER NOT EXISTS { ?item wdt:P396 [] . }
+    # Ottieni l'etichetta in italiano
+    ?item rdfs:label ?itemLabel . FILTER(LANG(?itemLabel) = "it")
 
-        # Esclude gli item che hanno una proprietà P396 uguale a novalue
-        FILTER NOT EXISTS { ?item a wdno:P396 . }
-    }
-    OFFSET ${i}
-    LIMIT 1    
+    # Ottieni la descrizione in italiano
+    OPTIONAL { ?item schema:description ?itemDescription . FILTER(LANG(?itemDescription) = "it") }
+
+    # Ottieni gli alias (sinonimi) in italiano
+    OPTIONAL { ?item skos:altLabel ?itemAltLabel . FILTER(LANG(?itemAltLabel) = "it") }
+
+    # Ottieni l'immagine (se presente)
+    OPTIONAL { ?item wdt:P18 ?image . } # P18 = immagine
+
+    # Ottieni il numero di statements (dichiarazioni) dell'item
+    ?item wikibase:statements ?statementCount .
+
+    # Ottieni il numero di sitelinks dell'item
+    ?item wikibase:sitelinks ?sitelinkCount .
+
+    # Ottieni la data di ultimo aggiornamento dell'item
+    ?item schema:dateModified ?lastModified .
+
+    # Esclude gli item che hanno una proprietà P396
+    FILTER NOT EXISTS { ?item wdt:P396 [] . }
+
+    # Esclude gli item che hanno una proprietà P396 uguale a novalue
+    FILTER NOT EXISTS { ?item a wdno:P396 . }
+}
+LIMIT 20   
     `;
     return query
 }

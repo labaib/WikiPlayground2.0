@@ -11,6 +11,7 @@ import { searchOpacWorksByVid } from 'https://cdn.jsdelivr.net/gh/logo94/searchO
 // Locale
 import { randomItemQuery } from "./js/sparql.js"
 import { wikiRowBody } from './js/wikiListBody.js';
+import { editWikiItem } from './js/wikiEdit.js'
 
 const searchOpacNamesByLabel = async (itemLabel, endpoint = "opac.sbn.it") => {
 
@@ -90,6 +91,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     let query
     let wiki
+    let wikid
     let viaf_titles = []
 
     const checkLogin = await getWikiUserInfo() // Verifica credenziali
@@ -182,7 +184,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             mainModal.show()
 
             try {
-                const wikid = event.target.innerText
+                wikid = event.target.innerText
                 wiki = await getWikiEntityDetails(wikid)
 
                 // Immagine elemento
@@ -451,9 +453,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     noValueBtn.addEventListener('click', async (event) => {
         event.preventDefault();
 
+        console.log(wikid)
+
         noValueBtn.innerHTML = `<div class="spinner-border spinner-border-sm" role="status"></div>`
 
-        let apiResponse = await editWikiItem(itemId, [], token);
+        let apiResponse = await editWikiItem(wikid, [], token);
 
         if (apiResponse) {
             noValueBtn.innerHTML = `
@@ -461,7 +465,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
             </svg>
             `
-            window.open(`https://www.wikidata.org/wiki/Item:${itemId}`, "_blank");
+            window.open(`https://www.wikidata.org/wiki/Item:${wikid}`, "_blank");
         } else {
             alert('Errore durante la modifica dell\'elemento, riprovare')
         }
@@ -495,7 +499,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             alert('Selezionare almeno un candidato')
             return true
         } else if (opacList.length > 0) {
-            let apiResponse = await editWikiItem(itemId, opacList, token);
+            let apiResponse = await editWikiItem(wikid, opacList, token);
             if (apiResponse) {
                 editBtn.innerHTML = `
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16">
@@ -503,7 +507,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243z"/>
                 </svg>
                 `
-                window.open(`https://www.wikidata.org/wiki/Item:${itemId}`, "_blank");
+                window.open(`https://www.wikidata.org/wiki/Item:${wikid}`, "_blank");
             } else {
                 alert('Errore durante la modifica dell\'elemento, riprovare')
             }

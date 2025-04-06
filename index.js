@@ -9,7 +9,7 @@ import { getOpacAuthorDetails } from 'https://cdn.jsdelivr.net/gh/logo94/getOpac
 import { searchOpacWorksByVid } from 'https://cdn.jsdelivr.net/gh/logo94/searchOpacWorksByVid@main/index.js';
 
 // Locale
-import { randomItemQuery } from "./js/sparql.js"
+import { startingQuery, formatQuery } from "./js/sparql.js"
 import { wikiRowBody } from './js/wikiListBody.js';
 import { editWikiItem } from './js/wikiEdit.js'
 
@@ -114,7 +114,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         viewportMargin: Infinity
     });
 
-    query = await randomItemQuery()
+    query = await startingQuery()
 
     editor.setValue(query);
     editor.setSize(null, 650);
@@ -134,7 +134,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         query = editor.getValue();
 
-        const entities = await wikiSparqlRequest(query)
+        const query_params = query.split("WHERE {")[1].split("}\nLIMIT ")[0].trim()
+        const query_limit = query.split("LIMIT ")[1].trim()
+
+        const updatedQuery = await formatQuery(query_params, query_limit)
+
+        const entities = await wikiSparqlRequest(updatedQuery)
 
         if (entities.length === 0) {
             alert("Nessun risultato trovato, query non valida")

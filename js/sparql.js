@@ -7,13 +7,13 @@ WHERE {
     ?item wdt:P27 ?v ;  # P27 = paese di cittadinanza
           wdt:P214 [] . # P214 = identificativo VIAF
 
+    # Filtra per etichette in italiano
+    ?item rdfs:label ?itemLabel . FILTER(LANG(?itemLabel) = "it")
+
 }
 LIMIT 20
 
 # Alla query verranno aggiunti automaticamente in seguenti filtri:
-
-# Filtri per etichette in italiano
-# ?item rdfs:label ?itemLabel . FILTER(LANG(?itemLabel) = "it")
 
 # Esclusione degli item che hanno una proprietà P396
 # FILTER NOT EXISTS { ?item wdt:P396 [] . }
@@ -30,7 +30,6 @@ WHERE
 {
     ${params}
 
-    ?item rdfs:label ?itemLabel . FILTER(LANG(?itemLabel) = "it")
     OPTIONAL { ?item schema:description ?itemDescription . FILTER(LANG(?itemDescription) = "it") }
     OPTIONAL { ?item skos:altLabel ?itemAltLabel . FILTER(LANG(?itemAltLabel) = "it") }
     OPTIONAL { ?item wdt:P18 ?image . } # P18 = immagine

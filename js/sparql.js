@@ -9,6 +9,17 @@ WHERE {
 
 }
 LIMIT 20
+
+# Alla query verranno aggiunti automaticamente in seguenti filtri:
+
+# Filtri per etichette in italiano
+# ?item rdfs:label ?itemLabel . FILTER(LANG(?itemLabel) = "it")
+
+# Esclusione degli item che hanno una proprietà P396
+# FILTER NOT EXISTS { ?item wdt:P396 [] . }
+
+# Esclusione degli item che hanno una proprietà P396 uguale a novalue
+# FILTER NOT EXISTS { ?item a wdno:P396 . }
     `
     return query
 }

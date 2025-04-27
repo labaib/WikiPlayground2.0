@@ -8,48 +8,12 @@ import { getViafWorksById } from 'https://cdn.jsdelivr.net/gh/logo94/getViafWork
 import { getOpacAuthorDetails } from 'https://cdn.jsdelivr.net/gh/logo94/getOpacAuthorDetails@main/index.js';
 import { searchOpacWorksByVid } from 'https://cdn.jsdelivr.net/gh/logo94/searchOpacWorksByVid@main/index.js';
 
+import { wapiFetch } from 'https://cdn.jsdelivr.net/gh/logo94/wapiFetch@main/index.js';
+
 // Locale
 import { startingQuery, formatQuery } from "./js/sparql.js"
 import { wikiRowBody } from './js/wikiListBody.js';
 import { editWikiItem } from './js/wikiEdit.js'
-
-const searchOpacNamesByLabel = async (itemLabel, endpoint = "opac.sbn.it") => {
-
-    // Parametri URL
-    const params = new URLSearchParams({
-        core: "autori",
-        "item:6003:Nome": itemLabel,
-        "filter_nocheck:6021:Tipo_nome": "Persona:A"
-    });
-
-    try {
-
-        // opac.sbn.it
-        const url = `https://${endpoint}/o/opac-api/titles-search-auth?${params.toString()}`
-
-        const opacResponse = await fetch(url);
-        const opacJson = await opacResponse.json();
-
-        const resultList = opacJson.data.results.map((entity) => ({
-            vid: entity[0].id.replace("ITICCU", ""),
-            label: entity[0].label.replace(" , ", ", "),
-            type: entity[3].contents[0].value
-        }));
-        
-        if (resultList.length > 0) {
-            return resultList
-        } else {
-            return []
-        }
-    
-    } catch (error) {
-        console.error("Errore durante la verifica dello stato di login:", error);
-        return []
-    }
-
-} 
-
-const endpoint = "cors-proxy.readinmonkey.workers.dev"
 
 // timeout prima del redirect
 const delay = ms => new Promise(res => setTimeout(res, ms));
@@ -94,8 +58,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     let wikid
     let viaf_titles = []
 
-    const checkLogin = await getWikiUserInfo() // Verifica credenziali
-    const token = await getWikiAuthToken()  // Ottieni token wikidata
+    let checkLogin = null
+    let token = null
+
+    const checkLogin_req = await wapiFetch('https://www.wikidata.org/w/api.php?action=query&meta=userinfo&format=json')  // Verifica credenziali
+    if (checkLogin_req.query?.userinfo) {
+        token = data.query.userinfo
+    } 
+    const token_req = await wapiFetch('https://www.wikidata.org/w/api.php?action=query&meta=tokens&format=json')  // Ottieni token wikidata
+    token = null ? token_req.query.tokens.csrftoken == "+\\" : token_req.query.tokens.csrftoken  // Estrazione valore da risposta
 
     if (!checkLogin || !token) {
         alert(`Eseguire il login in Wikidata`)

@@ -94,12 +94,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     const checkLogin_req = await wapiFetch('https://www.wikidata.org/w/api.php?action=query&meta=userinfo&format=json')  // Verifica credenziali
     console.log(checkLogin_req)
     if (checkLogin_req.query?.userinfo) {
-        token = data.query.userinfo
+        checkLogin = checkLogin_req.query.userinfo
     } 
     console.log('login caricato')
     const token_req = await wapiFetch('https://www.wikidata.org/w/api.php?action=query&meta=tokens&format=json')  // Ottieni token wikidata
     console.log(token_req)
-    token = null ? token_req.query.tokens.csrftoken == "+\\" : token_req.query.tokens.csrftoken  // Estrazione valore da risposta
+    token = token_req.query.tokens.csrftoken;
+    if (token === "+\\") {
+        token = null;
+    }
+  // Estrazione valore da risposta
     
     console.log('documento caricato')
 

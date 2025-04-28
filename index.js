@@ -257,18 +257,18 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 const works_req = await wapiFetch(`https://viaf.org/viaf/${viaf}`, 'GET', {'Accept': 'application/json'}, null)
 
-                console.log(works_req)
-
-                const works_array = works_req['ns1:VIAFCluster']['ns1:titles']['ns1:work']
-
-                console.log(works_array)
+                const works_res = works_req['ns1:VIAFCluster']['ns1:titles']['ns1:work']
 
                 let works = []
 
-                works_array.forEach(work => {
-                    works.push(work['ns1:title'])
-                })
-
+                if (Array.isArray(works_res)) {
+                    works_res.forEach(work => {
+                        works.push(work['ns1:title'])
+                    })
+                } else if (typeof works_res === 'object' && works_res !== null) {
+                    works = [works_res['ns1:title']]
+                } 
+ 
                 viafCounter.innerText = works.length
 
                 works.forEach(work => {
@@ -372,7 +372,38 @@ document.addEventListener("DOMContentLoaded", async () => {
             opacListElement.hidden = true
             opacDetailElement.hidden = false
 
-            const detail = await getOpacAuthorDetails(event.target.innerText);
+            const detail_params = new URLSearchParams({
+                core: "autori",
+                id: `ITICCU${event.target.innerText}`,
+                page: 1
+            })
+
+            const detail_req = await wapiFetch(`https://opac.sbn.it/o/opac-api/title?${detail_params.toString()}`, 'GET', {'Accept': 'application/json'}, null)
+            const data = detail_req.data.results[0]
+
+            let detail = {
+                id: data.id.trim(),
+                title: data.title.trim(),
+                type: data.pretitle.trim()
+            }
+
+            data.contents[0].body.forEach(element => {
+
+                let key = (element[0].value).trim()
+                let value = ""
+                if (element[1]?.contents) {
+                    element[1]?.contents.forEach((subvalue) => {
+                        value += (subvalue.value).trim() + "\n"
+                    })
+                } else if (element[1]?.values) {
+                    value = element[1].values[0].value
+                } else {
+                    value = element[1].value
+                }
+
+                detail[key] = value.trim()
+
+            });
 
             const tableLine = document.createElement("li")
             tableLine.className = "list-group-item border-0"
@@ -400,7 +431,35 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             opacDetailElement.appendChild(headerLine)
 
-            const works = await searchOpacWorksByVid(event.target.innerText, 20);
+            const params = new URLSearchParams({
+                core: "sbn",
+                "item:5032:BID": event.target.innerText,
+                "page-size": 20,
+                page: 1
+            })
+
+            const myHeaders = new Headers();
+            myHeaders.append(
+                "Cookie", 
+                "COOKIE_SUPPORT=true; GUEST_LANGUAGE_ID=it_IT;"
+            );
+
+            const requestOptions = {
+                headers: myHeaders,
+                redirect: "follow"
+            };
+
+            const works_req = await wapiFetch(`https://opac.sbn.it/o/opac-api/titles-search-post?${params.toString()}`, 'POST', requestOptions, null)
+
+            console.log(works_req)
+
+            const works = works_req.data.results.map((result) => ({
+                bid: result.bid,
+                title: result.title.info.split(" / ")[0],
+                author: result.title.text,
+                type: result.type,
+                notes: result.infos.join(" | ")
+            }))
 
             works.forEach((work) => {
                 const workLiElement = document.createElement("li")

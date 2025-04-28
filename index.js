@@ -8,7 +8,7 @@ import { getViafWorksById } from 'https://cdn.jsdelivr.net/gh/logo94/getViafWork
 import { getOpacAuthorDetails } from 'https://cdn.jsdelivr.net/gh/logo94/getOpacAuthorDetails@main/index.js';
 import { searchOpacWorksByVid } from 'https://cdn.jsdelivr.net/gh/logo94/searchOpacWorksByVid@main/index.js';
 
-import { wapiFetch } from 'https://cdn.jsdelivr.net/gh/logo94/wapiFetch@main/index.js';
+//import { wapiFetch } from 'https://cdn.jsdelivr.net/gh/logo94/wapiFetch@main/index.js';
 
 // Locale
 import { startingQuery, formatQuery } from "./js/sparql.js"
@@ -30,6 +30,34 @@ const createLiElement = (key, value) => {
         `
     return element  
 }
+
+const wapiFetch = async ( url ) => {
+        return new Promise((resolve, reject) => {
+            const requestId = new Date().getTime();  // Crea un ID univoco per tracciare la risposta
+
+            // Invia il messaggio alla pagina per richiedere l'API tramite content.js
+            window.postMessage({
+                action: 'request-api',
+                url: url,
+                requestId: requestId
+            }, window.origin);
+
+            // Ascolta la risposta dal content.js
+            window.addEventListener('message', function(event) {
+                // Verifica che la risposta sia corretta (stessa origine, azione corretta, ID corretto)
+                if (event.origin !== window.origin || !event.data || event.data.action !== 'api-response' || event.data.requestId !== requestId) {
+                    return; // Ignora risposte non correlate
+                }
+
+                // Gestisci la risposta (successo o errore)
+                if (event.data.success) {
+                    resolve(event.data.data);  // Risolvi la promise con i dati JSON
+                } else {
+                    reject(new Error(event.data.error));  // Rifiuta la promise con l'errore
+                }
+            });
+        });
+    }
 
 // Inizializzazione pagina
 document.addEventListener("DOMContentLoaded", async () => {
@@ -61,19 +89,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     let checkLogin = null
     let token = null
 
+    console.log('documento caricato')
+
     const checkLogin_req = await wapiFetch('https://www.wikidata.org/w/api.php?action=query&meta=userinfo&format=json')  // Verifica credenziali
     console.log(checkLogin_req)
     if (checkLogin_req.query?.userinfo) {
         token = data.query.userinfo
     } 
+    console.log('login caricato')
     const token_req = await wapiFetch('https://www.wikidata.org/w/api.php?action=query&meta=tokens&format=json')  // Ottieni token wikidata
     console.log(token_req)
     token = null ? token_req.query.tokens.csrftoken == "+\\" : token_req.query.tokens.csrftoken  // Estrazione valore da risposta
+    
+    console.log('documento caricato')
 
     if (!checkLogin || !token) {
         alert(`Eseguire il login in Wikidata`)
         return false;
     }
+    
 
     login_status.className = "alert alert-success text-success m-0 px-2 pt-1"
     login_status.innerText = `${checkLogin.name}`

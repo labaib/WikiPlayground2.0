@@ -438,11 +438,18 @@ document.addEventListener("DOMContentLoaded", async () => {
                 page: 1
             })
 
-            const myHeaders = {
-                "Cookie": "COOKIE_SUPPORT=true; GUEST_LANGUAGE_ID=it_IT;"
-            }
-            
-            const works_req = await wapiFetch(`https://opac.sbn.it/o/opac-api/titles-search-post?${params.toString()}`, 'POST', myHeaders, {})
+            const myHeaders = {}
+            myHeaders.append(
+                "Cookie", 
+                "COOKIE_SUPPORT=true; GUEST_LANGUAGE_ID=it_IT;"
+            );
+
+            const headersObj = {};
+            myHeaders.forEach((value, key) => {
+                headersObj[key] = value;
+            });
+
+            const works_req = await wapiFetch(`https://opac.sbn.it/o/opac-api/titles-search-post?${params.toString()}`, 'POST', headersObj, {})
 
             console.log(works_req)
 

@@ -43,4 +43,17 @@ const wikiRowBody = await ((entity, wiki_id, opac) => {
 
 });
 
-export { wikiRowBody };
+// OPAC list element
+const createLiElement = (key, value) => {
+    const element = document.createElement("li")
+    element.className = "list-group-item border-0 border-bottom"
+    element.innerHTML = `
+        <div class="row w-100">
+            <div class="col-6 text-end px-4"><b><a href="https://www.wikidata.org/wiki/Property:${key}" target="_blank">${key}</a></b></div>
+            <div class="col-6 text-start"><a href="https://www.wikidata.org/wiki/${value}" target="_blank">${value}</a></div>
+        </div>
+        `
+    return element  
+}
+
+export { wikiRowBody, createLiElement };

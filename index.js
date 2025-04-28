@@ -1,70 +1,14 @@
 // CDN
-import { getWikiAuthToken } from 'https://cdn.jsdelivr.net/gh/logo94/getWikiAuthToken@main/index.js';
-import { getWikiUserInfo } from 'https://cdn.jsdelivr.net/gh/logo94/getWikiUserInfo@main/index.js';
-import { wikiSparqlRequest } from 'https://cdn.jsdelivr.net/gh/logo94/wikiSparqlRequest@main/index.js';
+import { wapiFetch } from 'https://cdn.jsdelivr.net/gh/logo94/wapiFetch@main/index.js';
 import { getWikiEntityDetails } from 'https://cdn.jsdelivr.net/gh/logo94/getWikiEntityDetails@main/index.js';
 import { getViafWorksById } from 'https://cdn.jsdelivr.net/gh/logo94/getViafWorksById@main/index.js';
-import { searchOpacNamesByLabel } from 'https://cdn.jsdelivr.net/gh/logo94/searchOpacNamesByLabel@main/index.js';
 import { getOpacAuthorDetails } from 'https://cdn.jsdelivr.net/gh/logo94/getOpacAuthorDetails@main/index.js';
 import { searchOpacWorksByVid } from 'https://cdn.jsdelivr.net/gh/logo94/searchOpacWorksByVid@main/index.js';
 
-//import { wapiFetch } from 'https://cdn.jsdelivr.net/gh/logo94/wapiFetch@main/index.js';
-
-const wapiFetch = async (url, method = 'GET', headers = {}, body = null) => {
-    return new Promise((resolve, reject) => {
-        const requestId = new Date().getTime();  // ID univoco per tracciare la risposta
-
-        // Definisci un listener dedicato per gestire la risposta
-        const responseHandler = (event) => {
-            if (event.origin !== window.origin || !event.data) return;
-            if (event.data.action !== 'api-response' || event.data.requestId !== requestId) return;
-
-            // Rimuovi il listener dopo la risposta per evitare memory leaks
-            window.removeEventListener('message', responseHandler);
-
-            // Gestisci il risultato della risposta
-            if (event.data.success) {
-                resolve(event.data.data);  // Risolvi la promise con i dati
-            } else {
-                reject(new Error(event.data.error || 'Errore sconosciuto nella risposta'));
-            }
-        };
-
-        // Aggiungi il listener per la risposta
-        window.addEventListener('message', responseHandler);
-
-        // Invia la richiesta al content.js
-        window.postMessage({
-            action: 'request-api',
-            url: url,
-            requestId: requestId,
-            method: method,  // Passa il metodo (GET o POST)
-            headers: headers,
-            body: body       // Passa il corpo della richiesta (se esiste)
-        }, window.origin);
-    });
-};
-
 // Locale
 import { startingQuery, formatQuery } from "./js/sparql.js"
-import { wikiRowBody } from './js/wikiListBody.js';
+import { wikiRowBody, createLiElement } from './js/wikiListBody.js';
 import { editWikiItem } from './js/wikiEdit.js'
-
-// timeout prima del redirect
-const delay = ms => new Promise(res => setTimeout(res, ms));
-
-// OPAC list element
-const createLiElement = (key, value) => {
-    const element = document.createElement("li")
-    element.className = "list-group-item border-0 border-bottom"
-    element.innerHTML = `
-        <div class="row w-100">
-            <div class="col-6 text-end px-4"><b>${key}</b></div>
-            <div class="col-6 text-start">${value}</div>
-        </div>
-        `
-    return element  
-}
 
 // Inizializzazione pagina
 document.addEventListener("DOMContentLoaded", async () => {
@@ -158,15 +102,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (entities.length === 0) {
             alert("Nessun risultato trovato, query non valida")
-        }
+            return false
 
-        wikiList.hidden = false
+        } else {
+
+            wikiList.hidden = false
         
-        // collapse
-        new bootstrap.Collapse(document.getElementById('sparql_row'), { hide: true });
-        new bootstrap.Collapse(document.getElementById('results_row'), { show: true });
+            new bootstrap.Collapse(document.getElementById('sparql_row'), { hide: true });
+            new bootstrap.Collapse(document.getElementById('results_row'), { show: true });
 
-        sparql_btn.innerHTML = "Cerca"
+            sparql_btn.innerHTML = "Cerca"
+        }
 
         for (const entity of entities) {
 
@@ -290,7 +236,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                     }
                 }
-                
 
                 // Sitelinks
                 if (wiki?.sitelinks) {
@@ -301,9 +246,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                     }
                 }
 
-                
-
-
             } catch (error) {
                 console.error(error)
             }
@@ -312,7 +254,17 @@ document.addEventListener("DOMContentLoaded", async () => {
             try {
 
                 const viaf = wiki?.claims?.P214?.[0]?.mainsnak?.datavalue?.value
-                const works = await getViafWorksById(viaf)
+
+                const works_req = await wapiFetch(`https://viaf.org/viaf/${viaf}`, 'GET', {'Accept': 'application/json'}, null)
+
+
+                const works_array = works_req['ns1:VIAFCluster']['ns1:titles']['ns1:work']
+
+                let works = []
+
+                works_array.forEach(work => {
+                    works.push(work['ns1:title'])
+                })
 
                 viafCounter.innerText = works.length
 

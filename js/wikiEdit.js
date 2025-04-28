@@ -117,7 +117,7 @@ const editWikiItem = async (wikiItemId, opacMatchList, token, wapiFetch) => {
     let response = await wapiFetch(
         "https://www.wikidata.org/w/api.php", 
         'POST', 
-        {"Content-Type": "application/x-www-form-urlencoded"},
+        {"Content-Type": "application/json"},
         {
             "action": "wbeditentity",
             "id": wikiItemId,

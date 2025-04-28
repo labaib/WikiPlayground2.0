@@ -500,7 +500,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         noValueBtn.innerHTML = `<div class="spinner-border spinner-border-sm" role="status"></div>`
 
-        let apiResponse = await editWikiItem(wikid, [], token);
+        let apiResponse = await editWikiItem(wikid, [], token, wapiFetch);
 
         if (apiResponse) {
             noValueBtn.innerHTML = `
@@ -548,7 +548,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 `
             return true
         } else if (opacList.length > 0) {
-            let apiResponse = await editWikiItem(wikid, opacList, token);
+            let apiResponse = await editWikiItem(wikid, opacList, token, wapiFetch);
             if (apiResponse) {
                 editBtn.innerHTML = `
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16">

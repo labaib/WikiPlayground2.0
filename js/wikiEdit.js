@@ -99,7 +99,7 @@ const claimBodyNoMatchValue = async (currentDate) => {
 }
 
 // Esegui modifica a elemento tramite chiamata API
-const editWikiItem = async (wikiItemId, opacMatchList, token) => {
+const editWikiItem = async (wikiItemId, opacMatchList, token, wapiFetch) => {
     
     // Data corrente
     let currentDate = new Date().toISOString().split('T')[0]

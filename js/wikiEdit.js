@@ -123,23 +123,12 @@ const editWikiItem = async (wikiItemId, opacMatchList, token) => {
         summary: "WikiPlayground" // per successivo riconoscimento
     })
 
-    // Header chiamata
-    const option = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: params,
-        credentials: "include" 
-    }
-
     // Esecuzione chiamata POST
-    let response = await fetch("https://www.wikidata.org/w/api.php", option)
-    let rjson = await response.json()
-    if (rjson.success === 1) {
+    let response = await wapiFetch("https://www.wikidata.org/w/api.php", 'POST', {"Content-Type": "application/x-www-form-urlencoded"}, params)
+    if (response.success === 1) {
         return true
     } else {
-        console.log(rjson)
+        console.log(response)
         return false
     }
 

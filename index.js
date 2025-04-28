@@ -440,8 +440,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             const works_req = await wapiFetch(`https://opac.sbn.it/o/opac-api/titles-search-post?${params.toString()}`, 'POST', {"Cookie": "COOKIE_SUPPORT=true; GUEST_LANGUAGE_ID=it_IT;"}, null)
 
-            console.log(works_req)
-
             const works = works_req.data.results.map((result) => ({
                 bid: result.bid,
                 title: result.title.info.split(" / ")[0],
@@ -499,8 +497,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Bottone inserimento novalue
     noValueBtn.addEventListener('click', async (event) => {
         event.preventDefault();
-
-        console.log(wikid)
 
         noValueBtn.innerHTML = `<div class="spinner-border spinner-border-sm" role="status"></div>`
 

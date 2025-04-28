@@ -332,7 +332,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             // BOX POAC
             try {
-                const opac = await searchOpacNamesByLabel(wiki.labels.it.value)
+                const opacc_params = new URLSearchParams({
+                    core: "autori",
+                    "item:6003:Nome": wiki.labels.it.value,
+                    "filter_nocheck:6021:Tipo_nome": "Persona:A"
+                });
+    
+                const opac_reqq = await wapiFetch(`https://opac.sbn.it/o/opac-api/titles-search-auth?${opacc_params.toString()}`, 'GET', {'Accept': 'application/json'}, null)
+    
+                const opac = opac_reqq.data.results.map((entity) => ({
+                    vid: entity[0].id.replace("ITICCU", ""),
+                    label: entity[0].label.replace(" , ", ", "),
+                    type: entity[3].contents[0].value
+                }));
 
                 if (opac.length === 0) {
 

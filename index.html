@@ -41,8 +41,9 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="https://www.wikidata.org/w/index.php?title=Special:UserLogin" target="_blank">Login</a>
                     <a class="dropdown-item" href="https://github.com/labaib/WikiPlayground/blob/main/README.md" target="_blank">Guida</a>
+                    <a class="dropdown-item" href="https://www.wikidata.org/w/index.php?title=Special:UserLogin" target="_blank">Login</a>
+                    <a class="dropdown-item" href="https://chromewebstore.google.com/detail/wapi/lmjpfcjpoifmnfenlbnmgijkegiddmjg" target="_blank">WAPI</a>
                     <a class="dropdown-item" href="https://labaib.github.io/WikiPlayground/stats.html" target="_blank">Statistiche</a>
                     <a class="dropdown-item" href="https://www.wikidata.org/wiki/Property_talk:P396" target="_blank">Proprietà P396</a>
                     <a class="dropdown-item" href="https://query.wikidata.org/" target="_blank">Query Service</a>
@@ -54,13 +55,19 @@
                 <a class="navbar-brand" href="/WikiPlayground/"><b><i>WikiPlayground</i></b></a>
             </li>
             <li class="nav-item my-auto">
-                <div id="login_status" class="alert alert-danger text-danger m-0 px-2 pt-1" role="alert" style="height: 2em;">Connesso</div>
+                <div id="login_status" class="alert alert-danger text-danger m-0 px-2 pt-1" role="alert" style="height: 2em;">Non connesso</div>
             </li>
         </ul>
     </nav>
 
     <div class="flex-container h-90 overflow-y-auto mt-3">
-        <div class="accordion mx-5 h-75" id="mainAccordion">
+
+        <div id="errorBox" class="error-box mx-auto text-center py-3 px-4" style="width: fit-content;">
+            Per utilizzare l'applicazione è necessario scaricare l'estensione per browser <a href="https://chromewebstore.google.com/detail/wapi/lmjpfcjpoifmnfenlbnmgijkegiddmjg" target="_blank">WAPI</a>  ed effettuare il login in <a href="https://www.wikidata.org/w/index.php?title=Special:UserLogin" target="_blank">Wikidata</a><br>
+            <small><i>Per informazioni, o in caso di problemi, consultare la <a href="https://github.com/labaib/WikiPlayground/blob/main/README.md" target="_blank">guida</a></i></small>
+        </div>
+        
+        <div class="accordion mx-5 h-65" id="mainAccordion">
             <!-- Prima riga -->
             <div class="accordion-item border-0">
                 <h2 class="accordion-header mx-auto bg-light" id="headingOne" style="width: fit-content;">
@@ -85,9 +92,7 @@
             <div class="accordion-item border-0 h-75 overflow-y-auto">
                 <div id="results_row" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#mainAccordion">
                     <div class="accordion-body w-75 mx-auto">
-                        <ul id="wiki_list" class="list-group mx-auto" hidden>
-                            <!-- Risultati dinamici verranno inseriti qui -->
-                        </ul>
+                        <ul id="wiki_list" class="list-group mx-auto" hidden></ul>
                     </div>
                 </div>
             </div>

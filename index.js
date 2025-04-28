@@ -61,25 +61,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     let checkLogin = null
     let token = null
 
-    const checkLogin_req = await wapiFetch('https://www.wikidata.org/w/api.php?action=query&meta=userinfo&format=json', 'GET')  // Verifica credenziali
+    const checkLogin_req = await wapiFetch('https://www.wikidata.org/w/api.php?action=query&meta=userinfo&format=json', 'GET', {'Accept': 'application/json'}, null)  // Verifica credenziali
     if (checkLogin_req.query?.userinfo) {
         checkLogin = checkLogin_req.query.userinfo
     } 
 
-    const token_req = await wapiFetch('https://www.wikidata.org/w/api.php?action=query&meta=tokens&format=json', 'GET')  // Ottieni token wikidata
+    const token_req = await wapiFetch('https://www.wikidata.org/w/api.php?action=query&meta=tokens&format=json', 'GET', {'Accept': 'application/json'}, null)  // Ottieni token wikidata
     token = token_req.query.tokens.csrftoken;
     if (token === "+\\") {
         token = null;
     }
 
     if (!checkLogin || !token) {
-        alert(`Eseguire il login in Wikidata`)
+        const errorBox = document.getElementById('errorBox');
+        errorBox.style.display = 'block';
         return false;
-    }
-
-    login_status.className = "alert alert-success text-success m-0 px-2 pt-1"
-    login_status.innerText = `${checkLogin.name}`
-
+    } else {
+        login_status.className = "alert alert-success text-success m-0 px-2 pt-1"
+        login_status.innerText = `${checkLogin.name}`
+    }   
 
     let editor = CodeMirror.fromTextArea(sparql_textarea, {
         mode: 'application/sparql-query', // Modalità SPARQL
@@ -114,7 +114,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const updatedQuery = await formatQuery(query_params, query_limit)
 
-        const entities = await wikiSparqlRequest(updatedQuery)
+        const sparql_params = new URLSearchParams({
+            query: updatedQuery
+        });
+
+        const sparql_req = await wapiFetch(`https://query.wikidata.org/sparql?${sparql_params.toString()}`, 'GET', {'Accept': 'application/sparql-results+json'}, null)  // Ottieni token wikidata
+        const entities = sparql_req.results.bindings
 
         if (entities.length === 0) {
             alert("Nessun risultato trovato, query non valida")

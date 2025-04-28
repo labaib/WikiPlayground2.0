@@ -260,6 +260,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 const works_array = works_req['ns1:VIAFCluster']['ns1:titles']['ns1:work']
 
+                console.log(works_array)
+
                 let works = []
 
                 works_array.forEach(work => {

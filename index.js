@@ -31,33 +31,36 @@ const createLiElement = (key, value) => {
     return element  
 }
 
-const wapiFetch = async ( url ) => {
-        return new Promise((resolve, reject) => {
-            const requestId = new Date().getTime();  // Crea un ID univoco per tracciare la risposta
+const wapiFetch = async (url) => {
+    return new Promise((resolve, reject) => {
+        const requestId = new Date().getTime();  // ID univoco
 
-            // Invia il messaggio alla pagina per richiedere l'API tramite content.js
-            window.postMessage({
-                action: 'request-api',
-                url: url,
-                requestId: requestId
-            }, window.origin);
+        // Definisci un listener dedicato
+        const responseHandler = (event) => {
+            if (event.origin !== window.origin || !event.data) return;
+            if (event.data.action !== 'api-response' || event.data.requestId !== requestId) return;
 
-            // Ascolta la risposta dal content.js
-            window.addEventListener('message', function(event) {
-                // Verifica che la risposta sia corretta (stessa origine, azione corretta, ID corretto)
-                if (event.origin !== window.origin || !event.data || event.data.action !== 'api-response' || event.data.requestId !== requestId) {
-                    return; // Ignora risposte non correlate
-                }
+            // Rimuovi il listener dopo la risposta
+            window.removeEventListener('message', responseHandler);
 
-                // Gestisci la risposta (successo o errore)
-                if (event.data.success) {
-                    resolve(event.data.data);  // Risolvi la promise con i dati JSON
-                } else {
-                    reject(new Error(event.data.error));  // Rifiuta la promise con l'errore
-                }
-            });
-        });
-    }
+            if (event.data.success) {
+                resolve(event.data.data);
+            } else {
+                reject(new Error(event.data.error || 'Errore sconosciuto nella risposta'));
+            }
+        };
+
+        window.addEventListener('message', responseHandler);
+
+        // Invia la richiesta
+        window.postMessage({
+            action: 'request-api',
+            url: url,
+            requestId: requestId
+        }, window.origin);
+    });
+};
+
 
 // Inizializzazione pagina
 document.addEventListener("DOMContentLoaded", async () => {
@@ -105,7 +108,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   // Estrazione valore da risposta
     
-    console.log('documento caricato')
+    console.log('token caricato')
 
     if (!checkLogin || !token) {
         alert(`Eseguire il login in Wikidata`)

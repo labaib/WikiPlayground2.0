@@ -257,6 +257,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 const works_req = await wapiFetch(`https://viaf.org/viaf/${viaf}`, 'GET', {'Accept': 'application/json'}, null)
 
+                console.log(works_array)
 
                 const works_array = works_req['ns1:VIAFCluster']['ns1:titles']['ns1:work']
 

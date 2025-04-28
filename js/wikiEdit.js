@@ -124,7 +124,7 @@ const editWikiItem = async (wikiItemId, opacMatchList, token, wapiFetch) => {
     })
 
     // Esecuzione chiamata POST
-    let response = await wapiFetch("https://www.wikidata.org/w/api.php", 'POST', {"Content-Type": "application/x-www-form-urlencoded"}, params)
+    let response = await wapiFetch("https://www.wikidata.org/w/api.php", 'POST', {"Content-Type": "application/x-www-form-urlencoded"}, params.toString())
     if (response.success === 1) {
         return true
     } else {

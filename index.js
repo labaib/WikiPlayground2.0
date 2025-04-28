@@ -8,7 +8,7 @@ import { getViafWorksById } from 'https://cdn.jsdelivr.net/gh/logo94/getViafWork
 import { getOpacAuthorDetails } from 'https://cdn.jsdelivr.net/gh/logo94/getOpacAuthorDetails@main/index.js';
 import { searchOpacWorksByVid } from 'https://cdn.jsdelivr.net/gh/logo94/searchOpacWorksByVid@main/index.js';
 
-//import { wapiFetch } from 'https://cdn.jsdelivr.net/gh/logo94/wapiFetch@main/index.js';
+import { wapiFetch } from 'https://cdn.jsdelivr.net/gh/logo94/wapiFetch@main/index.js';
 
 // Locale
 import { startingQuery, formatQuery } from "./js/sparql.js"
@@ -30,37 +30,6 @@ const createLiElement = (key, value) => {
         `
     return element  
 }
-
-const wapiFetch = async (url) => {
-    return new Promise((resolve, reject) => {
-        const requestId = new Date().getTime();  // ID univoco
-
-        // Definisci un listener dedicato
-        const responseHandler = (event) => {
-            if (event.origin !== window.origin || !event.data) return;
-            if (event.data.action !== 'api-response' || event.data.requestId !== requestId) return;
-
-            // Rimuovi il listener dopo la risposta
-            window.removeEventListener('message', responseHandler);
-
-            if (event.data.success) {
-                resolve(event.data.data);
-            } else {
-                reject(new Error(event.data.error || 'Errore sconosciuto nella risposta'));
-            }
-        };
-
-        window.addEventListener('message', responseHandler);
-
-        // Invia la richiesta
-        window.postMessage({
-            action: 'request-api',
-            url: url,
-            requestId: requestId
-        }, window.origin);
-    });
-};
-
 
 // Inizializzazione pagina
 document.addEventListener("DOMContentLoaded", async () => {
@@ -94,13 +63,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     console.log('documento caricato')
 
-    const checkLogin_req = await wapiFetch('https://www.wikidata.org/w/api.php?action=query&meta=userinfo&format=json')  // Verifica credenziali
+    const checkLogin_req = await wapiFetch('https://www.wikidata.org/w/api.php?action=query&meta=userinfo&format=json', 'GET')  // Verifica credenziali
     console.log(checkLogin_req)
     if (checkLogin_req.query?.userinfo) {
         checkLogin = checkLogin_req.query.userinfo
     } 
     console.log('login caricato')
-    const token_req = await wapiFetch('https://www.wikidata.org/w/api.php?action=query&meta=tokens&format=json')  // Ottieni token wikidata
+    const token_req = await wapiFetch('https://www.wikidata.org/w/api.php?action=query&meta=tokens&format=json', 'GET')  // Ottieni token wikidata
     console.log(token_req)
     token = token_req.query.tokens.csrftoken;
     if (token === "+\\") {

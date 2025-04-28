@@ -444,12 +444,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 "COOKIE_SUPPORT=true; GUEST_LANGUAGE_ID=it_IT;"
             );
 
-            const requestOptions = {
-                headers: myHeaders,
-                redirect: "follow"
-            };
-
-            const works_req = await wapiFetch(`https://opac.sbn.it/o/opac-api/titles-search-post?${params.toString()}`, 'POST', requestOptions, null)
+            const works_req = await wapiFetch(`https://opac.sbn.it/o/opac-api/titles-search-post?${params.toString()}`, 'POST', myHeaders, {})
 
             console.log(works_req)
 

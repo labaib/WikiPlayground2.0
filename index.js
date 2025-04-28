@@ -172,7 +172,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             const wiki_id = entity.item.value.split("/").pop();
 
-            let opac_results = await searchOpacNamesByLabel(entity.itemLabel.value)
+            const opac_params = new URLSearchParams({
+                core: "autori",
+                "item:6003:Nome": entity.itemLabel.value,
+                "filter_nocheck:6021:Tipo_nome": "Persona:A"
+            });
+
+            const opac_req = await wapiFetch(`https://opac.sbn.it/o/opac-api/titles-search-auth?${opac_params.toString()}`, 'GET', {'Accept': 'application/json'}, null)
+
+            const opac_results = opac_req.data.results.map((entity) => ({
+                vid: entity[0].id.replace("ITICCU", ""),
+                label: entity[0].label.replace(" , ", ", "),
+                type: entity[3].contents[0].value
+            }));
 
             const entityElement = document.createElement("li")
             entityElement.className = "list-group-item border-0"

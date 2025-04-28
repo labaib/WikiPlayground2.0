@@ -438,7 +438,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 page: 1
             })
 
-            const myHeaders = {}
+            const myHeaders = new Headers();
             myHeaders.append(
                 "Cookie", 
                 "COOKIE_SUPPORT=true; GUEST_LANGUAGE_ID=it_IT;"

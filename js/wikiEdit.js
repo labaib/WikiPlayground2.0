@@ -112,19 +112,21 @@ const editWikiItem = async (wikiItemId, opacMatchList, token, wapiFetch) => {
     } else if (opacMatchList.length === 0) { // se non ci sono match viene aggiunto il valore 'novalue'
         claims = await claimBodyNoMatchValue(currentDate)
     }
-    
-    // Parametri URL
-    const params = new URLSearchParams({
-        action: "wbeditentity",
-        id: wikiItemId,
-        token: token,
-        format: "json",
-        data: JSON.stringify({"claims":claims}),
-        summary: "WikiPlayground" // per successivo riconoscimento
-    })
 
     // Esecuzione chiamata POST
-    let response = await wapiFetch("https://www.wikidata.org/w/api.php", 'POST', {"Content-Type": "application/x-www-form-urlencoded"}, params.toString())
+    let response = await wapiFetch(
+        "https://www.wikidata.org/w/api.php", 
+        'POST', 
+        {"Content-Type": "application/x-www-form-urlencoded"},
+        {
+            action: "wbeditentity",
+            id: wikiItemId,
+            token: token,
+            format: "json",
+            data: JSON.stringify({"claims":claims}),
+            summary: "WikiPlayground"
+        }
+    )
     if (response.success === 1) {
         return true
     } else {

@@ -1,9 +1,6 @@
 // CDN
 import { wapiFetch } from 'https://cdn.jsdelivr.net/gh/logo94/wapiFetch@main/index.js';
 import { getWikiEntityDetails } from 'https://cdn.jsdelivr.net/gh/logo94/getWikiEntityDetails@main/index.js';
-import { getViafWorksById } from 'https://cdn.jsdelivr.net/gh/logo94/getViafWorksById@main/index.js';
-import { getOpacAuthorDetails } from 'https://cdn.jsdelivr.net/gh/logo94/getOpacAuthorDetails@main/index.js';
-import { searchOpacWorksByVid } from 'https://cdn.jsdelivr.net/gh/logo94/searchOpacWorksByVid@main/index.js';
 
 // Locale
 import { startingQuery, formatQuery } from "./js/sparql.js"

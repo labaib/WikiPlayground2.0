@@ -119,12 +119,12 @@ const editWikiItem = async (wikiItemId, opacMatchList, token, wapiFetch) => {
         'POST', 
         {"Content-Type": "application/x-www-form-urlencoded"},
         {
-            action: "wbeditentity",
-            id: wikiItemId,
-            token: token,
-            format: "json",
-            data: JSON.stringify({"claims":claims}),
-            summary: "WikiPlayground"
+            "action": "wbeditentity",
+            "id": wikiItemId,
+            "token": token,
+            "format": "json",
+            "data": JSON.stringify({"claims":claims}),
+            "summary": "WikiPlayground"
         }
     )
     if (response.success === 1) {

@@ -4,7 +4,7 @@ import { getWikiUserInfo } from 'https://cdn.jsdelivr.net/gh/logo94/getWikiUserI
 import { wikiSparqlRequest } from 'https://cdn.jsdelivr.net/gh/logo94/wikiSparqlRequest@main/index.js';
 import { getWikiEntityDetails } from 'https://cdn.jsdelivr.net/gh/logo94/getWikiEntityDetails@main/index.js';
 import { getViafWorksById } from 'https://cdn.jsdelivr.net/gh/logo94/getViafWorksById@main/index.js';
-//import { searchOpacNamesByLabel } from 'https://cdn.jsdelivr.net/gh/logo94/searchOpacNamesByLabel@main/index.js';
+import { searchOpacNamesByLabel } from 'https://cdn.jsdelivr.net/gh/logo94/searchOpacNamesByLabel@main/index.js';
 import { getOpacAuthorDetails } from 'https://cdn.jsdelivr.net/gh/logo94/getOpacAuthorDetails@main/index.js';
 import { searchOpacWorksByVid } from 'https://cdn.jsdelivr.net/gh/logo94/searchOpacWorksByVid@main/index.js';
 
@@ -61,29 +61,21 @@ document.addEventListener("DOMContentLoaded", async () => {
     let checkLogin = null
     let token = null
 
-    console.log('documento caricato')
-
     const checkLogin_req = await wapiFetch('https://www.wikidata.org/w/api.php?action=query&meta=userinfo&format=json', 'GET')  // Verifica credenziali
-    console.log(checkLogin_req)
     if (checkLogin_req.query?.userinfo) {
         checkLogin = checkLogin_req.query.userinfo
     } 
-    console.log('login caricato')
+
     const token_req = await wapiFetch('https://www.wikidata.org/w/api.php?action=query&meta=tokens&format=json', 'GET')  // Ottieni token wikidata
-    console.log(token_req)
     token = token_req.query.tokens.csrftoken;
     if (token === "+\\") {
         token = null;
     }
-  // Estrazione valore da risposta
-    
-    console.log('token caricato')
 
     if (!checkLogin || !token) {
         alert(`Eseguire il login in Wikidata`)
         return false;
     }
-    
 
     login_status.className = "alert alert-success text-success m-0 px-2 pt-1"
     login_status.innerText = `${checkLogin.name}`

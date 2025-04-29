@@ -113,19 +113,20 @@ const editWikiItem = async (wikiItemId, opacMatchList, token, wapiFetch) => {
         claims = await claimBodyNoMatchValue(currentDate)
     }
 
+    const params = new URLSearchParams();
+    params.append("action", "wbeditentity");
+    params.append("id", wikiItemId);
+    params.append("token", token);
+    params.append("format", "json");
+    params.append("data", JSON.stringify({ claims: claims }));
+    params.append("summary", "WikiPlayground");
+
     // Esecuzione chiamata POST
     let response = await wapiFetch(
         "https://www.wikidata.org/w/api.php", 
         'POST', 
-        {"Content-Type": "application/json"},
-        {
-            "action": "wbeditentity",
-            "id": wikiItemId,
-            "token": token,
-            "format": "json",
-            "data": JSON.stringify({"claims":claims}),
-            "summary": "WikiPlayground"
-        }
+        {},
+        params.toString()
     )
     if (response.success === 1) {
         return true

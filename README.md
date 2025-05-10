@@ -52,7 +52,7 @@ Esclusione degli item che hanno una proprietà P396 uguale a novalue
 FILTER NOT EXISTS { ?item a wdno:P396 . }
 ```
 
-Gli elementi trovati vengono tornati come lista in cui sono disponibili alcune informazioni di base, un tasto epr accedere all'elemento e un contatore che riporta il numero di match trovati all'interno dell'OPAC SBN.
+Gli elementi trovati vengono tornati come lista in cui sono disponibili alcune informazioni di base, un tasto per accedere all'elemento e un contatore che riporta il numero di match trovati all'interno dell'OPAC SBN.
 
 Accedendo al dettaglio di un elemento si apre una scheda suddivisa in due: 
 
@@ -81,8 +81,3 @@ Ad ogni modifica eeguita tramite il gioco viene attribuito un edit summary dal v
 | <- | ritorna a lista risultati OPAC |
 <br>
 
-
-
-
-### Future implementazioni
-* Gestione dinamica del dominio (per istanze Wikibase)

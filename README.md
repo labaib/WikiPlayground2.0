@@ -1,4 +1,4 @@
-# WikiPlayground
+# WikiPlayground 2.0
 Gioco per la riconciliazione delle entità SBN con gli Items Wikidata
 
 > Per poter utilizzare il gioco è necessario aver eseguito il login in Wikidata, anche da un'altra scheda del browser, e aver scaricato l'estensione WAPI

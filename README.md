@@ -78,6 +78,7 @@ Ad ogni modifica eeguita tramite il gioco viene attribuito un edit summary dal v
 | &nbsp;<div align="center"><img height="25" src="img/user.png"></div>&nbsp; | vai alla ricerca avanzata dei nomi in SBN |
 | &nbsp;<div align="center"><img height="25" src="img/link-45deg.svg"></div>&nbsp; | inserisci proprietà P396 con valore ID SBN |
 | &nbsp;<div align="center"><img height="25" src="img/cone-striped.svg"></div>&nbsp; | segnala errore in OPAC |
-| <- | ritorna a lista risultati OPAC |
+| &nbsp;+&nbsp; | inserisci `novalue` come valore della proprietà P396  |
+| &nbsp;<-&nbsp; | ritorna a lista risultati OPAC |
 <br>
 

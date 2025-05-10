@@ -8,7 +8,7 @@ Gioco per la riconciliazione delle entità SBN con gli Items Wikidata
 | Link | Descrizione |
 | --- | --- |
 | [WAPI](https://chromewebstore.google.com/detail/lmjpfcjpoifmnfenlbnmgijkegiddmjg) | Estensione per browser |
-| [GitHub](https://github.com/labaib/WikiPlayground) | repository codice |
+| [GitHub](https://github.com/logo94/WikiPlayground2.0) | repository codice |
 | [Q132260000](https://www.wikidata.org/wiki/Q132260000) | elemento Wikidata applicazione |
 | [Property talk:P396](https://www.wikidata.org/wiki/Property_talk:P396) | pagina progetto ICCU |
 | [Laboratorio Stelline 2025](https://github.com/labaib/WikiPlayground) | pagina Wikidata del laboratorio organizzato in occasione del Convegno delle Stelline 2025 |
@@ -18,6 +18,7 @@ Gioco per la riconciliazione delle entità SBN con gli Items Wikidata
 1. [Brave browser](https://brave.com/download/): browser basato su Chromium che blocca automaticamente i messaggi per la gestione dei cookies;
 2. [WAPI](https://chromewebstore.google.com/detail/lmjpfcjpoifmnfenlbnmgijkegiddmjg): estensione per browser, le richieste all'OPAC SBN effetuate dal gioco sono bloccate dai server ICCU per la violazione delle policy CORS (Cross-Origin Resource Sharing), per esegire comunque la chiamata è necessario il ricorso ad un'estensione per browser che esegua le chiamate al posto del gioco;
 3. Account [Wikidata](https://www.wikidata.org/w/index.php?&title=Special:UserLogin)
+4. Il browser potrebbe bloccare di default cookies di terze parti, indispensabili per l'autenticazione in Wikidata. Assicurarsi di abilitare tutti i cookies per la pagina (brave: icona leone > Controlli avanzati > Consenti tutti i cookie )
 <br>
 
 ## Come funziona
@@ -54,6 +55,8 @@ FILTER NOT EXISTS { ?item a wdno:P396 . }
 Gli elementi trovati vengono tornati come lista in cui sono disponibili alcune informazioni di base, un tasto epr accedere all'elemento e un contatore che riporta il numero di match trovati all'interno dell'OPAC SBN.
 
 Accedendo al dettaglio di un elemento si apre una scheda suddivisa in due: 
+
+<div align="center"><img height="25" src="img/tabs_screen.png"></div>
 
 Sulla sinistra sono riportate le informazioni sull'elemento Wikidata e la lista di titoli associati ottenuti tramite il VIAF
 

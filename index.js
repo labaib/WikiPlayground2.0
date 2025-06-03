@@ -526,7 +526,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (radio.value == "selected") {
                 let extId = radio.parentNode.parentNode.parentNode.querySelector('button').innerText
-                let extLabel = radio.parentNode.querySelector('p').innerText
+                let extLabel = radio.parentNode.querySelector('p').innerText.trim()
                 let opacObj = {
                     Id: extId,
                     Label: extLabel
